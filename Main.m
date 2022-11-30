@@ -19,10 +19,26 @@
 %
 %  START OF EXECUTABLE CODE
 %Cylinder Values
-cyl.stroke = 0.07; %Stroke [mm]
-cyl.bore = 1;
-cyl.CR = 1.58;
+cylP.stroke = 0.05; %Stroke [m]
+cylP.bore = 0.07;
+cylP.CR = 1.58;
+cylD.stroke = 0.07;
+cylD.bore = cylP.bore;
+cylD.CR = cylP.CR;
 
 %Crank Values
-crank.angle = 90;
-[volume1, volume2] = cylVolumeFun(cyl,crank);
+crank.angleP = 0 : 0.1 : 360;
+crank.angleD = 90 : 0.1 : 450;
+
+%Conrod Values
+conRod.length = 0.055;
+
+[volumeP, volumeD] = CylinderVol(cylP,cylD,crank,conRod);
+
+plot(crank.angleP,volumeP)
+xlabel('Crank Angle [deg]')
+ylabel('Volume [mm]')
+x
+hold
+plot(crank.angleD,volumeD)
+
