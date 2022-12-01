@@ -25,11 +25,14 @@ cylP.Vd = cylP.stroke*pi*(cylP.bore^2)/4;
 cylP.Vc = (cylP.CR-1)/cylP.Vd;
 cylP.R = conRod.length/(cylP.stroke*0.5);
 
-volumeP = cylP.Vc*(1+(0.5)*(cylP.CR-1)*(cylP.R+1-cosd(crank.angleP)-((cylP.R^2)-sind(crank.angleP)).^0.5));
-
 cylD.Vd = cylD.stroke*pi*(cylD.bore^2)/4;
 cylD.Vc = (cylD.CR-1)/cylD.Vd;
 cylD.R = conRod.length/(cylD.stroke*0.5);
 
 volumeD = cylD.Vc*(1+(0.5)*(cylD.CR-1)*(cylD.R+1-cosd(crank.angleD)-((cylD.R^2)-sind(crank.angleD)).^0.5));
+volumeP = (cylD.stroke*pi*0.25*cylD.bore^2)-volumeD;
+
+
+
+
 end
