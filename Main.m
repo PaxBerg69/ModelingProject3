@@ -38,7 +38,6 @@ conRod.length = 0.055;
 plot(crank.angleP,volumeP)
 xlabel('Crank Angle [deg]')
 ylabel('Volume [mm]')
-x
 hold
 plot(crank.angleD,volumeD)
 
