@@ -33,11 +33,11 @@ crank.angleD = 90 : 0.1 : 450;
 %Conrod Values
 conRod.length = 0.055;
 
-[volumeP, volumeD] = CylinderVol(cylP,cylD,crank,conRod);
+[cylP.volume, cylD.volume] = getVolumeE(cylP,cylD,crank,conRod);
 
-plot(crank.angleP,volumeP)
+plot(crank.angleP,cylP.volume)
 xlabel('Crank Angle [deg]')
 ylabel('Volume [mm]')
 hold
-plot(crank.angleD,volumeD)
+plot(crank.angleD,cylD.volume)
 

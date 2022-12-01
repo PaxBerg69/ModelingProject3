@@ -20,10 +20,10 @@
 %
 %  START OF EXECUTABLE CODE
 %
-function [volumeP, volumeD] = CylinderVol(cylP,cylD,crank,conRod)
-cylP.Vd = cylP.stroke*pi*(cylP.bore^2)/4;
-cylP.Vc = (cylP.CR-1)/cylP.Vd;
-cylP.R = conRod.length/(cylP.stroke*0.5);
+function [volumeP, volumeD] = getVolumeE(cylC,cylD,crank,conRod)
+cylC.Vd = cylC.stroke*pi*(cylC.bore^2)/4;
+cylC.Vc = (cylC.CR-1)/cylC.Vd;
+cylC.R = conRod.length/(cylC.stroke*0.5);
 
 cylD.Vd = cylD.stroke*pi*(cylD.bore^2)/4;
 cylD.Vc = (cylD.CR-1)/cylD.Vd;
