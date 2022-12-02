@@ -22,3 +22,4 @@ function [ V_c ]  = getVolumeC(disp, power, D)
 %  START OF EXECUTABLE CODE
 %
 V_c = 0.25*pi*(disp.y - power.y)*D^2;
+end
