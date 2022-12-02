@@ -1,15 +1,15 @@
 %CAN DELETE COMMENTED PORTION BELOW IF VARIABLES ARE DEFINED IN MAIN
 
 
-% theta2 = linspace(1,360,360);
+% theta2 = linspace(1,360,3600);
 % 
 % length.AB = 0.046;
 % length.CD = 0.0705;
 % length.OaA = 0.0138;
 % length.OaC = length.OaA;
 % 
-% theta3displacer = zeros(1,360);
-% theta3power = zeros(1,360);
+% theta3displacer = zeros(1,3600);
+% theta3power = zeros(1,3600);
 % 
 % [theta3displacer, theta3power] = getTheta3(length,theta2);
 % 
@@ -49,12 +49,10 @@ function [ theta3displacer, theta3power ]  = getTheta3(length,theta2)
 %
 %% Establish original link length in vector form
 
-%theta2 = linspace(0,360,1);    uncomment if not defined in main
-
 thetaS = 90.0 * (6.28/360);
 
 % For the displacer piston
-for z = 1:360
+for z = 1:3600
 
     vec.D = length.OaC * (cosd(theta2(z)) + i*sind(theta2(z)));   %define driving vector (link 2) in vector form
 
@@ -70,7 +68,7 @@ end
 
 %for the power piston
 theta2disp = zeros(1,360);
-for z = 1:360
+for z = 1:3600
     theta2disp(z) = theta2(z) + 90;
     vec.D = length.OaA * (cosd(theta2disp(z)) + i*sind(theta2disp(z)));   %define driving vector (link 2) in vector form
 
