@@ -22,6 +22,7 @@
 clc;
 close all;
 
+%% Initial Values
 %Cylinder Values
 cylP.stroke = 0.05; %Stroke [m]
 cylP.bore = 0.07;
@@ -30,11 +31,13 @@ cylD.stroke = 0.07;
 cylD.bore = cylP.bore;
 cylD.CR = cylP.CR;
 
+%Link Values
 length.OaA = 0.0138;
 length.OaC = 0.0138;
 length.AB = 0.046;
 length.CD = 0.0705;
 
+%Array Setup
 theta3displacer = zeros(1,3600);
 theta3power = zeros(1,3600);
 theta2 = linspace(0.1,360,3600);
@@ -43,7 +46,7 @@ ypower = zeros(1,3600);
 Fp = zeros(1,3600);
 torque = zeros(1,3600);
 
-
+%Pressure values
 Pmin = 500000; %[Pa] 
 Tc = 300;
 Te = 900;
@@ -51,16 +54,11 @@ volumeR = 0.00001; %[m]
 theta0 = 0;
 thetaF = 0;
 
-% plot(theta2, theta3power, theta2, theta3displacer);
-% legend('power piston', 'displacer piston');
-% xlabel('theta2 (deg)');
-% ylabel('theta3 (deg)');
 
-%Crank Values
+
+%Crank plotting Values
 crank.angleP = 0 : 0.1 : 360;
 crank.angleD = 90 : 0.1 : 450;
-%Conrod Values
-conRod.length = 0.055;
 
 %% Function Calls
 [theta3displacer, theta3power] = getTheta3(length,theta2);
@@ -73,6 +71,12 @@ Fp = getFp(P);
 torque = getTorque(Fp,length,theta2);
 Tavg = getTavg(theta2, torque);
 [theta0, thetaF] = getThetas(torque, Tavg);
+
+%% Plotting
+% plot(theta2, theta3power, theta2, theta3displacer);
+% legend('power piston', 'displacer piston');
+% xlabel('theta2 (deg)');
+% ylabel('theta3 (deg)');
 
 % plot(theta2,volumeE)
 % xlabel('Crank Angle [deg]')
