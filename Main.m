@@ -58,7 +58,7 @@ conRod.length = 0.055;
 [theta3displacer, theta3power] = getTheta3(length,theta2);
 [ydisplacer, ypower ]  = getYPosition( theta2, theta3displacer, theta3power, length);
 [volumeE] = getVolumeE(cylD,ydisplacer);
-[volumeC] = getVolumeC1(ydisplacer, ypower, cylD);
+[volumeC] = getVolumeC(ydisplacer, ypower, cylD);
 volumeT = volumeE+volumeC;
 [P] = getPressure(Pmin,volumeC,volumeE,volumeR,Tc,Te,theta2);
 % plot(theta2,volumeE)
@@ -68,6 +68,6 @@ volumeT = volumeE+volumeC;
 % plot(theta2,volumeC);
 % legend('VolumeE', 'VolumeC');
 
-plot(P,volumeT);
+plot(volumeT,P);
 xlabel('Pressure [Pa]')
 ylabel('Volume [m]')
