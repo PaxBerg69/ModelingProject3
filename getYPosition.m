@@ -1,21 +1,3 @@
-%CAN DELETED COMMENTED PORTION BELOW IF VARIABLES ARE DEFINED IN MAIN
-
-% theta2 = linspace(1,360,3600);
-% 
-% length.AB = 0.046;
-% length.CD = 0.0705;
-% length.OaA = 0.0138;
-% length.OaC = length.OaA;
-% 
-% 
-% ydisplacer = zeros(1,3600);
-% ypower = zeros(1,3600);
-% 
-% [ydisplacer, ypower] = getYPosition(theta2, theta3displacer, theta3power, length);
-% 
-% plot(theta2, ydisplacer, theta2, ypower);
-
-
 function [ ydisplacer, ypower ]  = getYPosition( theta2, theta3displacer, theta3power, length )
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  FUNCTION NAME: getYPosition

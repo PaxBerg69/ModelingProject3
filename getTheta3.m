@@ -1,23 +1,6 @@
 %CAN DELETE COMMENTED PORTION BELOW IF VARIABLES ARE DEFINED IN MAIN
 
 
-% theta2 = linspace(1,360,3600);
-% 
-% length.AB = 0.046;
-% length.CD = 0.0705;
-% length.OaA = 0.0138;
-% length.OaC = length.OaA;
-% 
-% theta3displacer = zeros(1,3600);
-% theta3power = zeros(1,3600);
-% 
-% [theta3displacer, theta3power] = getTheta3(length,theta2);
-% 
-% plot(theta2, theta3power, theta2, theta3displacer);
-% legend('power piston', 'displacer piston');
-% xlabel('theta2 (deg)');
-% ylabel('theta3 (deg)');
-
 function [ theta3displacer, theta3power ]  = getTheta3(length,theta2)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  FUNCTION NAME: getTheta3
