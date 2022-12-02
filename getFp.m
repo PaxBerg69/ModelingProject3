@@ -5,9 +5,9 @@
 % pressure = linspace(0,200,3600);
 % Fp = zeros(1,3600);
 % 
-% Fp = getFptest(pressure);
+% Fp = getFp(pressure);
 
-function [ Fp ]  = getFptest( pressure )
+function [ Fp ]  = getFp( pressure )
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  FUNCTION NAME: getFp
 %
