@@ -1,10 +1,11 @@
-function [ T_avg ]  = getTavg(theta,T)
+function [ T_avg ]  = getTavg(theta2,T)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  FUNCTION NAME: getTavg
 %
 %  PURPOSE
 %   compute the average torque as a function of crank angle (theta)
-%  INPUT
+%  INPUTS
+%   theta2: array of crank angles (rad)
 %   T: torque as a function of crank angle (N*m)
 %  OUTPUT
 %   T_avg: average torque for one cycle (N*m)
@@ -20,5 +21,5 @@ function [ T_avg ]  = getTavg(theta,T)
 %  START OF EXECUTABLE CODE
 % use the trapz function to calculate the average torque over the input
 % theta array
-T_avg = trapz(theta,T)/(2*pi);
+T_avg = trapz(theta2,T)/(2*pi);
 end

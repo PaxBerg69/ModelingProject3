@@ -1,12 +1,12 @@
-function [ V_c ]  = getVolumeC(disp, power, D)
+function [ V_c ]  = getVolumeC(yDisp, yPower, D)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  FUNCTION NAME: getVolumeC
 %
 %  PURPOSE
 %   calculate the compression volume of the stirling engine
 %  INPUTS
-%   disp: structure containing information on the displacer piston
-%   power: structure containing information on the power piston
+%   yDisp: y position of the displacer piston
+%   yPower: y position of the power piston (m)
 %   D: cylinder diameter (m)
 %  OUTPUT
 %   V_c: compression volume of the stirling engine for all crank angles
@@ -21,5 +21,5 @@ function [ V_c ]  = getVolumeC(disp, power, D)
 %   none
 %  START OF EXECUTABLE CODE
 %
-V_c = 0.25*pi*(disp.y - power.y)*D^2;
+V_c = 0.25*pi*(yDisp - yPower)*D^2;
 end
