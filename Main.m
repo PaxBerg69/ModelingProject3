@@ -69,5 +69,5 @@ volumeT = volumeE+volumeC;
 % legend('VolumeE', 'VolumeC');
 
 plot(volumeT,P);
-xlabel('Pressure [Pa]')
-ylabel('Volume [m]')
+xlabel('Volume [m]')
+ylabel('Pressure [Pa]')
