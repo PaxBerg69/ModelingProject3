@@ -72,6 +72,7 @@ volumeT = volumeE+volumeC;
 Fp = getFp(P);
 torque = getTorque(Fp,length,theta2);
 Tavg = getTavg(theta2, torque);
+[theta0, thetaF] = getThetas(torque, Tavg);
 
 % plot(theta2,volumeE)
 % xlabel('Crank Angle [deg]')
@@ -83,5 +84,6 @@ Tavg = getTavg(theta2, torque);
 plot(volumeT,P);
 xlabel('Volume [m]')
 ylabel('Pressure [Pa]')
+
 
 
