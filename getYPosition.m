@@ -1,6 +1,6 @@
 %CAN DELETED COMMENTED PORTION BELOW IF VARIABLES ARE DEFINED IN MAIN
 
-% theta2 = linspace(1,360,360);
+% theta2 = linspace(1,360,3600);
 % 
 % length.AB = 0.046;
 % length.CD = 0.0705;
@@ -8,8 +8,8 @@
 % length.OaC = length.OaA;
 % 
 % 
-% ydisplacer = zeros(1,360);
-% ypower = zeros(1,360);
+% ydisplacer = zeros(1,3600);
+% ypower = zeros(1,3600);
 % 
 % [ydisplacer, ypower] = getYPosition(theta2, theta3displacer, theta3power, length);
 % 
@@ -44,7 +44,7 @@ function [ ydisplacer, ypower ]  = getYPosition( theta2, theta3displacer, theta3
 %  START OF EXECUTABLE CODE
 %  Determine y position of displacer and power piston:
 
-for z = 1:360 
+for z = 1:3600 
     ydisplacer(z) = length.OaC * sind(theta2(z)) + length.CD * sind(theta3displacer(z));
     ypower(z) = length.OaA * sind(theta2(z)+90.0) + length.AB * sind(theta3power(z));
 
