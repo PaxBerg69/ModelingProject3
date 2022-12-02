@@ -28,7 +28,7 @@ function [ ydisplacer, ypower ]  = getYPosition( theta2, theta3displacer, theta3
 
 for z = 1:3600 
     ydisplacer(z) = length.OaC * sind(theta2(z)) + length.CD * sind(theta3displacer(z));
-    ypower(z) = length.OaA * sind(theta2(z)+90.0) + length.AB * sind(theta3power(z));
+    ypower(z) = length.OaA * sind(theta2(z)-90.0) + length.AB * sind(theta3power(z));
 
 end
 

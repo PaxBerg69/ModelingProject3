@@ -33,7 +33,7 @@ function [ torque ]  = getTorque( Fp, length, theta2 )
 %  START OF EXECUTABLE CODE
 %
 
-torque = Fp .* cosd(theta2) .* length.OaA;
+torque = -Fp .* cosd(theta2 - 90.0) .* length.OaA;
 end
 
 

@@ -18,6 +18,10 @@
 %  NA
 %
 %  START OF EXECUTABLE CODE
+
+clc;
+close all;
+
 %Cylinder Values
 cylP.stroke = 0.05; %Stroke [m]
 cylP.bore = 0.07;
@@ -36,6 +40,8 @@ theta3power = zeros(1,3600);
 theta2 = linspace(0.1,360,3600);
 ydisplacer = zeros(1,3600);
 ypower = zeros(1,3600);
+Fp = zeros(1,3600);
+torque = zeros(1,3600);
 
 
 Pmin = 500000; %[Pa] 
@@ -61,6 +67,10 @@ conRod.length = 0.055;
 [volumeC] = getVolumeC(ydisplacer, ypower, cylD);
 volumeT = volumeE+volumeC;
 [P] = getPressure(Pmin,volumeC,volumeE,volumeR,Tc,Te,theta2);
+Fp = getFp(P);
+torque = getTorque(Fp,length,theta2);
+Tavg = getTavg(theta2, torque);
+
 % plot(theta2,volumeE)
 % xlabel('Crank Angle [deg]')
 % ylabel('Volume [m]')
@@ -71,3 +81,5 @@ volumeT = volumeE+volumeC;
 plot(volumeT,P);
 xlabel('Volume [m]')
 ylabel('Pressure [Pa]')
+
+

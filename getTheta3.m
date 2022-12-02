@@ -52,7 +52,7 @@ end
 %for the power piston
 theta2disp = zeros(1,360);
 for z = 1:3600
-    theta2disp(z) = theta2(z) + 90;
+    theta2disp(z) = theta2(z) - 90;
     vec.D = length.OaA * (cosd(theta2disp(z)) + i*sind(theta2disp(z)));   %define driving vector (link 2) in vector form
 
     vec.Dstar = vec.D * exp(-i*thetaS);
