@@ -48,6 +48,8 @@ Pmin = 500000; %[Pa]
 Tc = 300;
 Te = 900;
 volumeR = 0.00001; %[m]
+theta0 = 0;
+thetaF = 0;
 
 % plot(theta2, theta3power, theta2, theta3displacer);
 % legend('power piston', 'displacer piston');

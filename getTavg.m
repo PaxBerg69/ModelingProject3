@@ -21,5 +21,5 @@ function [ T_avg ]  = getTavg(theta2,T)
 %  START OF EXECUTABLE CODE
 % use the trapz function to calculate the average torque over the input
 % theta array
-T_avg = trapz(theta2,T)/(2*pi);
+T_avg = trapz(theta2,T)/(360.0);
 end
