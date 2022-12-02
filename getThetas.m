@@ -53,9 +53,9 @@ function [ T_diff ]  = torqueDiff(theta2, T, T_avg)
 %  DATE: 12/2/22
 %
 %  DESCRIPTION OF LOCAL VARIABLES
-%
+%   index: location in the array corresponding to the input angle
 %  FUNCTIONS CALLED
-%
+%   round: rounds to the nearest integer
 %  START OF EXECUTABLE CODE
 %
 % find the index in the torque array corresponding to the input theta value
