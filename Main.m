@@ -33,9 +33,15 @@ length.CD = 0.0705;
 
 theta3displacer = zeros(1,3600);
 theta3power = zeros(1,3600);
-theta2 = linspace(1,360,3600);
+theta2 = linspace(0.1,360,3600);
 ydisplacer = zeros(1,3600);
 ypower = zeros(1,3600);
+
+
+Pmin = 500000; %[Pa] 
+Tc = 300;
+Te = 900;
+volumeR = 0.00001; %[m]
 
 % plot(theta2, theta3power, theta2, theta3displacer);
 % legend('power piston', 'displacer piston');
@@ -52,10 +58,16 @@ conRod.length = 0.055;
 [theta3displacer, theta3power] = getTheta3(length,theta2);
 [ydisplacer, ypower ]  = getYPosition( theta2, theta3displacer, theta3power, length);
 [volumeE] = getVolumeE(cylD,ydisplacer);
-% [volumeC] = getVolumeC()
-plot(theta2,volumeE)
-xlabel('Crank Angle [deg]')
-ylabel('Volume [mm]')
-hold
-% plot(crank.angleD,volumeC)
+[volumeC] = getVolumeC1(ydisplacer, ypower, cylD);
+volumeT = volumeE+volumeC;
+[P] = getPressure(Pmin,volumeC,volumeE,volumeR,Tc,Te,theta2);
+% plot(theta2,volumeE)
+% xlabel('Crank Angle [deg]')
+% ylabel('Volume [m]')
+% hold
+% plot(theta2,volumeC);
+% legend('VolumeE', 'VolumeC');
 
+plot(P,volumeT);
+xlabel('Pressure [Pa]')
+ylabel('Volume [m]')
