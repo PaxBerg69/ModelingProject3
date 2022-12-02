@@ -1,4 +1,4 @@
-function [ theta_0, theta_f ]  = getThetas(theta2, T, T_avg)
+function [ theta_0, theta_f ]  = getThetas(T, T_avg)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  FUNCTION NAME: getThetas
 %
@@ -6,7 +6,6 @@ function [ theta_0, theta_f ]  = getThetas(theta2, T, T_avg)
 %   find the intersection of the engine torque and the average torque to
 %   get theta_0 and theta_f
 %  INPUTS
-%   theta2: array of crank angles (rad)
 %   T: engine torque as a function of crank angle (N*m)
 %   T_avg: average torque for one cycle (N*m)
 %  OUTPUTS
