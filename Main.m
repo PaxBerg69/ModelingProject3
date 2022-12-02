@@ -70,6 +70,7 @@ volumeT = volumeE+volumeC;
 Fp = getFp(P);
 torque = getTorque(Fp,length,theta2);
 Tavg = getTavg(theta2, torque);
+[theta0, thetaF] = getThetas(torque, Tavg);
 
 %% Plotting
 % plot(theta2, theta3power, theta2, theta3displacer);
@@ -88,4 +89,3 @@ plot(volumeT,P);
 xlabel('Volume [m]')
 ylabel('Pressure [Pa]')
 
-[theta0, thetaF] = getThetas(torque,Tavg);
