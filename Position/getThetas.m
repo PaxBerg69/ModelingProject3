@@ -29,8 +29,8 @@ fun = @(theta2) torqueDiff(theta2,T,T_avg);
 
 % use fzero to find the angle where the engine torque is equal to the
 % average torque
-theta_0 = fzero(fun,[0,pi]);
-theta_f = fzero(fun,[pi,2*pi]);
+theta_0 = fzero(fun,[180,270]);
+theta_f = fzero(fun,[270,360]);
 end
 
 function [ T_diff ]  = torqueDiff(theta2, T, T_avg)
@@ -59,7 +59,7 @@ function [ T_diff ]  = torqueDiff(theta2, T, T_avg)
 %  START OF EXECUTABLE CODE
 %
 % find the index in the torque array corresponding to the input theta value
-index = round(theta2/(2*pi/3600));
+index = round(theta2/(360/3600));
 
 % use the index above to calculate the difference in torques
 T_diff = T(index)-T_avg;

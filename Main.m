@@ -88,4 +88,4 @@ plot(volumeT,P);
 xlabel('Volume [m]')
 ylabel('Pressure [Pa]')
 
-
+[theta0, thetaF] = getThetas(torque,Tavg);
