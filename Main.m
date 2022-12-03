@@ -54,11 +54,17 @@ volumeR = 0.00001; %[m]
 theta0 = 0;
 thetaF = 0;
 
-
+% Flywheel values
+Density = 1;
+Width = 1;
+ri = 1;
+I = 1;
 
 %Crank plotting Values
 crank.angleP = 0 : 0.1 : 360;
 crank.angleD = 90 : 0.1 : 450;
+
+variedParam = 'input';
 
 %% Function Calls
 [theta3displacer, theta3power] = getTheta3(length,theta2);
@@ -68,24 +74,11 @@ crank.angleD = 90 : 0.1 : 450;
 volumeT = volumeE+volumeC;
 [P] = getPressure(Pmin,volumeC,volumeE,volumeR,Tc,Te,theta2);
 Fp = getFp(P);
-torque = getTorque(Fp,length,theta2);
+[torque,power] = getTorque(Fp,length,theta2);
 Tavg = getTavg(theta2, torque);
 [theta0, thetaF] = getThetas(torque, Tavg);
+[difference] = flySize(I,Density,Width,ri);
+[FlywheeldiaO] = getFlywheelsize(I);
 
-%% Plotting
-% plot(theta2, theta3power, theta2, theta3displacer);
-% legend('power piston', 'displacer piston');
-% xlabel('theta2 (deg)');
-% ylabel('theta3 (deg)');
-
-% plot(theta2,volumeE)
-% xlabel('Crank Angle [deg]')
-% ylabel('Volume [m]')
-% hold
-% plot(theta2,volumeC);
-% legend('VolumeE', 'VolumeC');
-
-plot(volumeT,P);
-xlabel('Volume [m]')
-ylabel('Pressure [Pa]')
+printOutput(torque,power,FlywheeldiaO,P,volumeT,variedParam)
 

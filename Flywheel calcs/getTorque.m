@@ -9,7 +9,7 @@
 % plot(theta2, torque);
 
 
-function [ torque ]  = getTorque( Fp, length, theta2 )
+function [torque,power]  = getTorque( Fp, length, theta2 )
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  FUNCTION NAME: getTorque
 %
@@ -34,6 +34,7 @@ function [ torque ]  = getTorque( Fp, length, theta2 )
 %
 
 torque = -Fp .* cosd(theta2 - 90.0) .* length.OaA;
+power = torque*2000;
 end
 
 
