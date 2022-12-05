@@ -1,16 +1,17 @@
-function [ theta_0, theta_f ]  = getThetas(T, T_avg)
+function [ theta_0, theta_f, w_0]  = getThetas(T, T_avg)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  FUNCTION NAME: getThetas
 %
 %  PURPOSE
 %   find the intersection of the engine torque and the average torque to
-%   get theta_0 and theta_f
+%   get theta_0, theta_f, and w_0
 %  INPUTS
 %   T: engine torque as a function of crank angle (N*m)
 %   T_avg: average torque for one cycle (N*m)
 %  OUTPUTS
-%   theta_0: crank angle where energy is being added to the flywheel (rad)
-%   theta_f: crank angle where energy is removed from the flywheel (rad)
+%   theta_0: crank angle where energy is being added to the flywheel (deg)
+%   theta_f: crank angle where energy is removed from the flywheel (deg)
+%	w_0: angular velocity where energy is being added to the flywheel (rad)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %  AUTHOR: Trey Weber
@@ -31,6 +32,8 @@ fun = @(theta2) torqueDiff(theta2,T,T_avg);
 % average torque
 theta_0 = fzero(fun,[180 270]);
 theta_f = fzero(fun,[270 360]);
+
+w_0 = 
 end
 
 function [ T_diff ]  = torqueDiff(theta2, T, T_avg)
@@ -41,7 +44,7 @@ function [ T_diff ]  = torqueDiff(theta2, T, T_avg)
 %   setup a function of the difference between the engine torque and
 %   average torque
 %  INPUTS
-%   theta2: crank angle of the engine (rad)
+%   theta2: crank angle of the engine (deg)
 %   T: engine torque as a function of theta (N*m)
 %   T_avg: average torque over one cycle (N*m)
 %  OUTPUT
@@ -53,7 +56,7 @@ function [ T_diff ]  = torqueDiff(theta2, T, T_avg)
 %  DATE: 12/2/22
 %
 %  DESCRIPTION OF LOCAL VARIABLES
-%   index: location in the array corresponding to the input angle
+%   index: location in the theta array corresponding to the input angle
 %  FUNCTIONS CALLED
 %   round: rounds to the nearest integer
 %  START OF EXECUTABLE CODE
