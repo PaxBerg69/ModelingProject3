@@ -1,4 +1,4 @@
-function [] = printOutput(torque,power,FlywheeldiaO,P,volumeT)
+function [] = printOutput(theta2,torque,power,FlywheeldiaO,P,volumeT,w_2)
 % fprintf(torque);
 % fprintf(power);
 % fprintf(FlywheeldiaO);
@@ -26,6 +26,10 @@ ylabel('Pressure [Pa]')
 % xlabel('Volume [m]')
 % ylabel('Pressure [Pa]')
 
+% plot w_2 vs theta2
+plot(theta2,w_2);
+xlabel('Crank Angle (deg)');
+ylabel('Angular Velocity of Flywheel (rad/s)');
 %Plot Torque, Power, Flywheel Diameter based on the varied parameter
 % plot(torque,power,flywheeldiam,variedParam);
 end

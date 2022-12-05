@@ -84,5 +84,5 @@ I = getI(deltaKE,Cf,omega_avg);
 [FlywheeldiaO] = getFlywheelsize(I);
 w_2 = getOmega(Tavg,I,torque,theta0);
 
-printOutput(torque,power,FlywheeldiaO,P,volumeT)
+printOutput(theta2,torque,power,FlywheeldiaO,P,volumeT,w_2)
 
