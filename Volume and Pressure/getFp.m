@@ -33,6 +33,6 @@ function [ Fp ]  = getFp( pressure )
 
 Patm = 101.3*1000;  %Patm in Pa
 diam = 0.07;            %diameter of bore in meters
-Fp = (pressure-Patm) * (3.14/4) * diam.^2;    %force on piston in N
+Fp = (pressure-Patm) * (pi/4) * diam.^2;    %force on piston in N
 
 end
