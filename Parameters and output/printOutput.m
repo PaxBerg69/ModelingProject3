@@ -1,4 +1,4 @@
-function [] = printOutput(theta2,torque,power,FlywheeldiaO,P,volumeT,w_2, Pbot, Ptop, P1, P2, P3, P4)
+function [] = printOutput(theta2,theta0,torque,power,FlywheeldiaO,P,volumeT,w_2, Pbot, Ptop, P1, P2, P3, P4)
 % fprintf(torque);
 % fprintf(power);
 % fprintf(FlywheeldiaO);
@@ -39,7 +39,7 @@ hold off;
 
 % plot w_2 vs theta2
 figure
-plot(theta2,w_2);
+plot(theta2+theta0,w_2);
 xlabel('Crank Angle (deg)');
 ylabel('Angular Velocity of Flywheel (rad/s)');
 

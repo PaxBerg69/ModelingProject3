@@ -88,5 +88,5 @@ I = getI(deltaKE,Cf,omega_avg);
 w_2 = getOmega(Tavg,I,torque,theta0);
 %[FlywheeldiaOVary,torqueVary,powerVary] = getParamVary(Pmin,volumeC,volumeE,volumeR,Tc,theta2,length);
 
-printOutput(theta2,torque,power,flywheelDiaO,P,volumeT,w_2,Pbot,Ptop, P1, P2, P3, P4);
+printOutput(theta2,theta0,torque,power,flywheelDiaO,P,volumeT,w_2,Pbot,Ptop, P1, P2, P3, P4);
 
