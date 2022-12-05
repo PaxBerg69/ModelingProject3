@@ -45,6 +45,8 @@ ydisplacer = zeros(1,3600);
 ypower = zeros(1,3600);
 Fp = zeros(1,3600);
 torque = zeros(1,3600);
+Pbot = zeros(1,200);
+Ptop = zeros(1,200);
 
 %Pressure values
 Pmin = 500000; %[Pa] 
@@ -85,5 +87,5 @@ I = getI(deltaKE,Cf,omega_avg);
 w_2 = getOmega(Tavg,I,torque,theta0);
 [FlywheeldiaOVary,torqueVary,powerVary] = getParamVary(Pmin,volumeC,volumeE,volumeR,Tc,theta2,length);
 
-printOutput(torque,power,FlywheeldiaO,P,volumeT)
+printOutput(theta2,torque,power,FlywheeldiaO,P,volumeT,w_2)
 

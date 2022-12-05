@@ -24,10 +24,12 @@ function [w_2] = getOmega(Tavg,I_flywheel,T,Theta_0)
 %
 %  START OF EXECUTABLE CODE
 COF = 0.002;
-w_avg = 2000;
+w_avg = 2000*2*pi/60;
 fun = @(Theta_2,w_2) diffEQ(T,Tavg,I_flywheel,w_2,Theta_2);
-w_0 = 2000*(2-COF)/2;
-[Theta_2,w_2] = ode45(fun,[Theta_0 Theta_0+360],w_0);
+w_0 = w_avg*(2-COF)/2;
+theta_array = Theta_0:0.1:Theta_0+359.9;
+[Theta_2,w_2] = ode45(fun,theta_array,w_0);
+w_2 = w_2.';
 w2_Min = min(w_2);       % in rad/s
 w2_Max = max(w_2);       % in rad/s
 if w2_Max <= COF*w_avg+w2_Min && w2_Min >= -COF*w_avg+w2_Max
