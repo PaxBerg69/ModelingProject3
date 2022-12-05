@@ -33,7 +33,6 @@ fun = @(theta2) torqueDiff(theta2,T,T_avg);
 theta_0 = fzero(fun,[180 270]);
 theta_f = fzero(fun,[270 360]);
 
-w_0 = 
 end
 
 function [ T_diff ]  = torqueDiff(theta2, T, T_avg)

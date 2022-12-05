@@ -20,7 +20,7 @@ function[] = getCheck(Tavg,I_flywheel,T,Theta_0,w_0,Theta_2)
 %  START OF EXECUTABLE CODE
 COF = 0.002;
 fun = @(Theta_2,w_2) getdiffEQ(T,Tavg,I_flywheel,w_2,Theta_2);
-[Theta_2,w_2] = ode45(fun,[Theta_0 Theta_0+360],w_0);
+[Theta_2,w_2] = ode45(fun,[Theta_0 Theta_0+360]);
 w2_Min = min(w2);       % in rad/s
 w2_Max = max(w2);       % in rad/s
 w2_avg = (w2_Min+w2_Max)/2;  % in rad/s
