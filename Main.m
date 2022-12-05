@@ -45,6 +45,8 @@ ydisplacer = zeros(1,3600);
 ypower = zeros(1,3600);
 Fp = zeros(1,3600);
 torque = zeros(1,3600);
+Pbot = zeros(1,200);
+Ptop = zeros(1,200);
 
 %Pressure values
 Pmin = 500000; %[Pa] 
