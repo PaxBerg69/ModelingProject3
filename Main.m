@@ -77,6 +77,7 @@ variedParam = 'input';
 [volumeC] = getVolumeC(ydisplacer, ypower, cylD);
 volumeT = volumeE+volumeC;
 [P] = getPressure(Pmin,volumeC,volumeE,volumeR,Tc,Te,theta2);
+[ P1, P2, P3, P4, Ptop, Pbot ]  = getIdeal( P, volumeC, volumeR, volumeE, Pbot, Ptop, Pmin );
 Fp = getFp(P);
 [torque] = getTorque(Fp,length,theta2);
 Tavg = getTavg(theta2, torque);
