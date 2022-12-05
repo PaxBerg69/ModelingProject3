@@ -4,6 +4,6 @@ function [FlywheeldiaOVary,torqueVary,powerVary] = getParamVary(Pmin,volumeC,vol
 newTe = 1200;
 [P] = getPressure(Pmin,volumeC,volumeE,volumeR,Tc,newTe,theta2);
 [Fp]  = getFp(P);
-[torqueVary,powerVary]  = getTorque(Fp,length,theta2 );
+[torqueVary]  = getTorque(Fp,length,theta2 );
 plot(volumeT,P)
 end
