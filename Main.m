@@ -84,5 +84,5 @@ I = getI(deltaKE,Cf,omega_avg);
 [difference] = flySize(I,Density,Width,ri);
 [FlywheeldiaO] = getFlywheelsize(I);
 
-printOutput(torque,power,FlywheeldiaO,P,volumeT,variedParam)
+printOutput(torque,power,FlywheeldiaO,P,volumeT)
 
