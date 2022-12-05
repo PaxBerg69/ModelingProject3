@@ -18,9 +18,20 @@ function [w_2] = getOmega(Tavg,I_flywheel,T,Theta_0)
 %  AUTHOR: Andrew Casar, Trey Weber
 %  DATE:12/05/2022
 %
-%  DESCRIPTION OF LOCAL VARIABLES:
+%  DESCRIPTION OF LOCAL VARIABLES
+%	COF: coefficient of fluctuation allowed for the flywheel
+%	w_0: minimum angular velocity of the flywheel (rad/s)
+%	theta_array: array from theta_0 to theta_0 on the next cycle used in
+%				 ode45 (deg)
+%	w2_min: minimum angular velocity of the flywheel (rad/s)
+%	w2_max: maximum angular velocity of the flywheel (rad/s)
 % 
-%  FUNCTIONS CALLED: getdiffEQ 
+%  FUNCTIONS CALLED 
+%	getdiffEQ: function handle defining the differential equation to be
+%	used in ode45
+%	ode45: differential equation solver
+%	min: minimum value of an array
+%	max: maximum value of an array
 %
 %  START OF EXECUTABLE CODE
 COF = 0.002;
@@ -54,10 +65,10 @@ function [dwdtheta] = diffEQ(T,T_avg,I,w,Theta_2)
 %  AUTHOR: Andrew Casar, Trey Weber
 %  DATE:12/05/2022
 %
-%  DESCRIPTION OF LOCAL VARIABLES:
-% 
-%  FUNCTIONS CALLED: none
-%
+%  DESCRIPTION OF LOCAL VARIABLES
+%	index: location in the torque array corresponding to the input theta
+%  FUNCTIONS CALLED
+%	round: round to the nearest integer
 %  START OF EXECUTABLE CODE
 % find the index in the torque array corresponding to the input theta value
 index = round(Theta_2/(360/3600));
