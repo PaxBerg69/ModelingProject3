@@ -59,6 +59,8 @@ Density = 1;
 Width = 1;
 ri = 1;
 I = 1;
+Cf = 0.002;
+omega_avg = 2000*0.10472;
 
 %Crank plotting Values
 crank.angleP = 0 : 0.1 : 360;
@@ -78,6 +80,7 @@ Fp = getFp(P);
 Tavg = getTavg(theta2, torque);
 [theta0, thetaF] = getThetas(torque, Tavg);
 deltaKE = getDeltaKE(theta0, thetaF, Tavg, torque, theta2);
+I = getI(deltaKE,Cf,omega_avg);
 [difference] = flySize(I,Density,Width,ri);
 [FlywheeldiaO] = getFlywheelsize(I);
 
