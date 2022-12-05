@@ -1,4 +1,4 @@
-function [] = printOutput(torque,power,FlywheeldiaO,P,volumeT,variedParam)
+function [] = printOutput(torque,power,FlywheeldiaO,P,volumeT)
 % fprintf(torque);
 % fprintf(power);
 % fprintf(FlywheeldiaO);
