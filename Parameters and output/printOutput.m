@@ -42,6 +42,7 @@ figure
 plot(theta2,w_2);
 xlabel('Crank Angle (deg)');
 ylabel('Angular Velocity of Flywheel (rad/s)');
+
 %Plot Torque, Power, Flywheel Diameter based on the varied parameter
 % plot(torque,power,flywheeldiam,variedParam);
 end
