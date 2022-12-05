@@ -40,7 +40,7 @@ P2 = Mtot * R * Tlow / Vlow;
 P3 = Mtot * R * Thigh / Vhigh;
 P4 = Mtot * R * Tlow / Vhigh;
 
-VolRange = linspace(Vlow, Vhigh, 200);
+VolRange = linspace(Vlow, Vhigh, 3600);
 
 Ptop = Mtot * R * Thigh ./ VolRange;
 Pbot = Mtot * R * Tlow ./ VolRange;
