@@ -34,7 +34,7 @@ function [torque,power]  = getTorque( Fp, length, theta2 )
 %
 
 torque = -Fp .* cosd(theta2 - 90.0) .* length.OaA;
-% power = torque*omega;
+power = torque*2000;
 end
 
 
