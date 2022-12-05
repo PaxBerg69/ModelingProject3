@@ -77,6 +77,7 @@ Fp = getFp(P);
 [torque,power] = getTorque(Fp,length,theta2);
 Tavg = getTavg(theta2, torque);
 [theta0, thetaF] = getThetas(torque, Tavg);
+deltaKE = getDeltaKE(theta0, thetaF, Tavg, torque, theta2);
 [difference] = flySize(I,Density,Width,ri);
 [FlywheeldiaO] = getFlywheelsize(I);
 
