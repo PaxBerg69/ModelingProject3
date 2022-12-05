@@ -45,8 +45,8 @@ ydisplacer = zeros(1,3600);
 ypower = zeros(1,3600);
 Fp = zeros(1,3600);
 torque = zeros(1,3600);
-Pbot = zeros(1,200);
-Ptop = zeros(1,200);
+Pbot = zeros(1,3600);
+Ptop = zeros(1,3600);
 
 %Pressure values
 Pmin = 500000; %[Pa] 
@@ -84,8 +84,9 @@ Tavg = getTavg(theta2, torque);
 [theta0, thetaF] = getThetas(torque, Tavg);
 deltaKE = getDeltaKE(theta0, thetaF, Tavg, torque, theta2);
 I = getI(deltaKE,Cf,omega_avg);
-[FlywheeldiaO] = getFlywheelsize(I);
+[flywheelDiaO] = getFlywheelsize(I);
 w_2 = getOmega(Tavg,I,torque,theta0);
-[FlywheeldiaOVary,torqueVary,powerVary] = getParamVary(Pmin,volumeC,volumeE,volumeR,Tc,theta2,length);
-printOutput(theta2,torque,power,FlywheeldiaO,P,volumeT,w_2)
+%[FlywheeldiaOVary,torqueVary,powerVary] = getParamVary(Pmin,volumeC,volumeE,volumeR,Tc,theta2,length);
+
+printOutput(theta2,theta0,torque,power,flywheelDiaO,P,volumeT,w_2,Pbot,Ptop, P1, P2, P3, P4);
 

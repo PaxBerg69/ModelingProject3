@@ -28,7 +28,7 @@ function[flywheelDiaO] = getFlywheelsize(I)
 density = 8000;  % in Kg/m^3.
 width = 0.05;    % in meters
 
-x0 = [0,10];  % want the positive value, 10m radius flywheel unlikely.
+x0 = [0,1];  % want the positive value, 1m radius flywheel unlikely.
 fun = @(ri) Idif(I,density,width,ri);
 ri = fzero(fun,x0);  % in meters
 ro=0.07+ri;    % in meters
