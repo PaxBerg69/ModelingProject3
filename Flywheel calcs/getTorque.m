@@ -41,5 +41,3 @@ for z = 1:3600
 
     torque(z) = -B(7);    %establish each force/torque component according to matrix setup (see pdf for list of the 7 equations used)
 end
-
-plot(theta2, torque);
