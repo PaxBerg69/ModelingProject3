@@ -24,9 +24,9 @@ function [ deltaKE  ]  = getDeltaKE( theta0, thetaF, Tavg, torque, theta2)
 %
 
 %convert to radians
-theta2 = theta2*(6.28/360);
-theta0 = theta0*(6.28/360);
-thetaF = thetaF*(6.28/360);
+theta2 = deg2rad(theta2);
+theta0 = deg2rad(theta0);
+thetaF = deg2rad(thetaF);
 
 %set bounds of integration
 theta0check = theta2 - theta0;
