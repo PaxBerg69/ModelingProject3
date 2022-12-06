@@ -90,10 +90,11 @@ printOutput(theta2,ydisplacer,ypower,torque,power,flywheelDiaO,P,volumeE,volumeC
 %% Parameter Vary
 figure(5)
 hold;
-Thigh = linspace(400,1200,7);
-powerV = zeros(1,7);
-Dvary = zeros(1,7);
-for j = 1:7
+plotResolution = 25;
+Thigh = linspace(400,2000,plotResolution);
+powerV = zeros(1,plotResolution);
+Dvary = zeros(1,plotResolution);
+for j = 1:plotResolution
 Te = Thigh(j);
 [theta3displacer, theta3power] = getTheta3(length,theta2);
 [ydisplacer, ypower ]  = getYPosition( theta2, theta3displacer, theta3power, length);
