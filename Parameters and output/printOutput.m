@@ -39,7 +39,7 @@ hold off;
 
 % plot w_2 vs theta2
 figure
-plot(theta2+theta0,w_2);
+plot(theta2,w_2);
 xlabel('Crank Angle (deg)');
 ylabel('Angular Velocity of Flywheel (rad/s)');
 

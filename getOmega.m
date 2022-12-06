@@ -1,4 +1,4 @@
-function [w_2] = getOmega(Tavg,I_flywheel,T,Theta_0)
+function [w_2] = getOmega(Tavg,I_flywheel,T,theta_2)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  FUNCTION NAME: getCheck
 %
@@ -36,11 +36,25 @@ function [w_2] = getOmega(Tavg,I_flywheel,T,Theta_0)
 %  START OF EXECUTABLE CODE
 COF = 0.002;
 w_avg = 2000*2*pi/60;
+
+% convert to radians
+theta_2 = deg2rad(theta_2);
+
+% define the differential equation for ode45
 fun = @(Theta_2,w_2) diffEQ(T,Tavg,I_flywheel,w_2,Theta_2);
-w_0 = w_avg*(2-COF)/2;
-theta_array = Theta_0:0.1:Theta_0+359.9;
-[Theta_2,w_2] = ode45(fun,theta_array,w_0);
-w_2 = w_2.';
+
+% run an initial guess with initial condition at w_avg
+[theta_2,w_2] = ode45(fun,theta_2,w_avg);
+w_2 = w_2.'; % transpose to make it a row vector
+
+% calculate the actual average of the initial guess
+w_2avg = trapz(theta_2,w_2)/(2*pi);
+offset = w_2avg-w_avg;
+
+% make a new guess but offset the IC by the difference in averages
+[theta_2,w_2] = ode45(fun,theta_2,w_avg-offset);
+w_2 = w_2.'; % transpose to make it a row vector
+
 w2_Min = min(w_2);       % in rad/s
 w2_Max = max(w_2);       % in rad/s
 if w2_Max <= COF*w_avg+w2_Min && w2_Min >= -COF*w_avg+w2_Max
@@ -71,7 +85,7 @@ function [dwdtheta] = diffEQ(T,T_avg,I,w,Theta_2)
 %	round: round to the nearest integer
 %  START OF EXECUTABLE CODE
 % find the index in the torque array corresponding to the input theta value
-index = round(Theta_2/(360/3600));
+index = round(Theta_2/(2*pi/3600));
 
 if index <= 3600
 	dwdtheta = (T(index)-T_avg)/(I*w);   % the diffeq to find w
