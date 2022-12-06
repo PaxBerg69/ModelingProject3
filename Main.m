@@ -89,8 +89,11 @@ printOutput(theta2,theta0,torque,0,flywheelDiaO,P,volumeT,w_2,Pbot,Ptop, P1, P2,
 %% Parameter Vary
 figure(5)
 hold;
-for j = 400:100:1200
-Te = j;
+Thigh = linspace(400,1200,7);
+powerV = zeros(1,7);
+Dvary = zeros(1,7);
+for j = 1:7
+Te = Thigh(j);
 [theta3displacer, theta3power] = getTheta3(length,theta2);
 [ydisplacer, ypower ]  = getYPosition( theta2, theta3displacer, theta3power, length);
 [volumeE] = getVolumeE(cylD,ydisplacer);
@@ -104,11 +107,20 @@ Tavg = getTavg(theta2, torque);
 [theta0, thetaF] = getThetas(torque, Tavg);
 deltaKE = getDeltaKE(theta0, thetaF, Tavg, torque, theta2);
 I = getI(deltaKE,Cf,omega_avg);
-[flywheelDiaO] = getFlywheelsize(I);
+Dvary(j) = 1000*getFlywheelsize(I);
 w_2 = getOmega(Tavg,I,torque,theta2);
-powerV = Tavg*omega_avg/1000;
-plot(j,powerV,'b.',j,flywheelDiaO,'r.')
+powerV(j) = Tavg*omega_avg/1000;
 [COF_act,w_2] = getOmega(Tavg,I,torque,theta2);
 end
 
+plot(Thigh, powerV);
+title('Power Output as a Function of Te');
+xlabel('Expansion Temperature (K)');
+ylabel('Power Output (kW)');
 
+
+figure;
+plot(Thigh, Dvary);
+title('Flywheel Diameter as a Function of Te');
+xlabel('Expansion Temperature (K)');
+ylabel('Flywheel Diameter (mm)');
