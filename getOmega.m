@@ -60,11 +60,6 @@ w2_Min = min(w_2);       % in rad/s
 w2_Max = max(w_2);       % in rad/s
 
 COF_act = (w2_Max-w2_Min)/w_avg;
-if w2_Max <= COF*w_avg+w2_Min && w2_Min >= -COF*w_avg+w2_Max
-    disp('The angular velocity of the crank is within the bounds')
-else
-    disp('The angular velocity of the crank is not within the bounds')
-end  % ends if statement
 end  % ends the getCheck function
 
 function [dwdtheta] = diffEQ(T,T_avg,I,w,Theta_2)

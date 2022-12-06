@@ -83,10 +83,10 @@ Tavg = getTavg(theta2, torque);
 deltaKE = getDeltaKE(theta0, thetaF, Tavg, torque, theta2);
 I = getI(deltaKE,Cf,omega_avg);
 [flywheelDiaO] = getFlywheelsize(I);
-w_2 = getOmega(Tavg,I,torque,theta2);
+[COF_act,w_2] = getOmega(Tavg,I,torque,theta2);
 % printOutput(theta2,theta0,torque,power,flywheelDiaO,P,volumeT,w_2,Pbot,Ptop, P1, P2, P3, P4);
 
-%%Parameter Vary
+%% Parameter Vary
 figure(1)
 hold
 for j = 400:100:1200
@@ -105,9 +105,14 @@ Tavg = getTavg(theta2, torque);
 deltaKE = getDeltaKE(theta0, thetaF, Tavg, torque, theta2);
 I = getI(deltaKE,Cf,omega_avg);
 [flywheelDiaO] = getFlywheelsize(I);
+<<<<<<< HEAD
 w_2 = getOmega(Tavg,I,torque,theta2);
 powerV = Tavg*omega_avg/1000;
 plot(j,powerV,'b.',j,flywheelDiaO,'r.')
+=======
+[COF_act,w_2] = getOmega(Tavg,I,torque,theta2);
+plot(j,Tavg,'b.',j,flywheelDiaO,'r.')
+>>>>>>> 2c88b8b4f0e6717cce922feff5ae3354be752eab
 
 end
 
