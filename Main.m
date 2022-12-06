@@ -88,7 +88,6 @@ w_2 = getOmega(Tavg,I,torque,theta2);
 
 %%Parameter Vary
 figure(1)
-figure(2)
 hold
 for j = 400:100:1200
 Te = j;
@@ -107,7 +106,8 @@ deltaKE = getDeltaKE(theta0, thetaF, Tavg, torque, theta2);
 I = getI(deltaKE,Cf,omega_avg);
 [flywheelDiaO] = getFlywheelsize(I);
 w_2 = getOmega(Tavg,I,torque,theta2);
-plot(j,Tavg,'b.',j,flywheelDiaO,'r.')
+powerV = Tavg*omega_avg/1000;
+plot(j,powerV,'b.',j,flywheelDiaO,'r.')
 
 end
 
