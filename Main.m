@@ -68,8 +68,6 @@ omega_avg = 2000*0.10472;
 crank.angleP = 0 : 0.1 : 360;
 crank.angleD = 90 : 0.1 : 450;
 
-variedParam = 'input';
-
 %% Function Calls
 [theta3displacer, theta3power] = getTheta3(length,theta2);
 [ydisplacer, ypower ]  = getYPosition( theta2, theta3displacer, theta3power, length);
@@ -85,8 +83,32 @@ Tavg = getTavg(theta2, torque);
 deltaKE = getDeltaKE(theta0, thetaF, Tavg, torque, theta2);
 I = getI(deltaKE,Cf,omega_avg);
 [flywheelDiaO] = getFlywheelsize(I);
-w_2 = getOmega(Tavg,I,torque,theta2);
-%[FlywheeldiaOVary,torqueVary,powerVary] = getParamVary(Pmin,volumeC,volumeE,volumeR,Tc,theta2,length);
+w_2 = getOmega(Tavg,I,torque,theta0);
+% printOutput(theta2,theta0,torque,power,flywheelDiaO,P,volumeT,w_2,Pbot,Ptop, P1, P2, P3, P4);
 
-printOutput(theta2,theta0,torque,power,flywheelDiaO,P,volumeT,w_2,Pbot,Ptop, P1, P2, P3, P4);
+%%Parameter Vary
+figure(1)
+figure(2)
+hold
+for j = 400:100:1200
+Te = j;
+[theta3displacer, theta3power] = getTheta3(length,theta2);
+[ydisplacer, ypower ]  = getYPosition( theta2, theta3displacer, theta3power, length);
+[volumeE] = getVolumeE(cylD,ydisplacer);
+[volumeC] = getVolumeC(ydisplacer, ypower, cylD);
+volumeT = volumeE+volumeC;
+[P] = getPressure(Pmin,volumeC,volumeE,volumeR,Tc,Te,theta2);
+[ P1, P2, P3, P4, Ptop, Pbot ]  = getIdeal( P, volumeC, volumeR, volumeE, Pbot, Ptop, Pmin );
+Fp = getFp(P);
+[torque] = getTorque(Fp,length,theta2);
+Tavg = getTavg(theta2, torque);
+[theta0, thetaF] = getThetas(torque, Tavg);
+deltaKE = getDeltaKE(theta0, thetaF, Tavg, torque, theta2);
+I = getI(deltaKE,Cf,omega_avg);
+[flywheelDiaO] = getFlywheelsize(I);
+w_2 = getOmega(Tavg,I,torque,theta0);
+plot(j,Tavg,'b.',j,flywheelDiaO,'r.')
+
+end
+
 
