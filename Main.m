@@ -106,7 +106,7 @@ Tavg = getTavg(theta2, torque);
 deltaKE = getDeltaKE(theta0, thetaF, Tavg, torque, theta2);
 I = getI(deltaKE,Cf,omega_avg);
 [flywheelDiaO] = getFlywheelsize(I);
-w_2 = getOmega(Tavg,I,torque,theta0);
+w_2 = getOmega(Tavg,I,torque,theta2);
 plot(j,Tavg,'b.',j,flywheelDiaO,'r.')
 
 end
