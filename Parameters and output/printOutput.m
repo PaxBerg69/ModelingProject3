@@ -1,3 +1,24 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  FUNCTION NAME: Print Output Function
+%  PURPOSE 
+%  Display are values and plots desired for analysis
+%  INPUT
+%  All relavent outputs (volume, torque, theta, power, location,
+%  coefficient of fluctuation, varied parameters, etc.)
+%
+%  OUTPUT
+%  No variable output,only print all values and plot relavent values/trends
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%  AUTHOR: Paxton Berger
+%  DATE: 11/30/2022
+%
+%  DESCRIPTION OF LOCAL VARIABLES
+%  
+%  FUNCTIONS CALLED
+%  NA
+%
+%  START OF EXECUTABLE CODE
 function [] = printOutput(theta2,ydisplacer,ypower,torque,power,FlywheeldiaO,P,volumeE,volumeC,volumeT,w_2,COF_act, Pbot, Ptop, P1, P2, P3, P4)
 fprintf('Average Engine Power: %f (kW)\n',power);
 fprintf('Flywheel Outer Diameter: %f (m)\n',FlywheeldiaO);

@@ -1,12 +1,19 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  FUNCTION NAME: Project 3: Main Function
-%  PURPOSE 
+%  PURPOSE
+%  To model a Stirling Engine using the given design parameters through
+%  volume, pressure, and rotational analysis, with a goal of deriving the
+%  proper flywheel diameter required for operation, as well as the output
+%  torque and power values, while maintaning an acceptable level of angular
+%  velocity fluctuation.
 % 
 %  INPUT
 %  NA
 %
 %  OUTPUT
-%  Print Output values
+%  Average Engine Power (kW), Flywheel outer diameter (m), Engine
+%  coefficient of fluctuation (-). Plot relevant parameters and trends
+%  associated with increased hot temps.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %  AUTHOR: Paxton Berger
