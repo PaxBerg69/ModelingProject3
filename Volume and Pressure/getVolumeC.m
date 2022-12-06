@@ -1,4 +1,4 @@
-function [ volumeC ]  = getVolumeC1(ydisplacer, ypower, cylD)
+function [ volumeC ]  = getVolumeC(ydisplacer, ypower, cylD)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  FUNCTION NAME: getVolumeC
 %
