@@ -30,8 +30,8 @@ fun = @(theta2) torqueDiff(theta2,T,T_avg);
 
 % use fzero to find the angle where the engine torque is equal to the
 % average torque
-theta_0 = fzero(fun,[180 270]);
-theta_f = fzero(fun,[270 360]);
+theta_0 = fzero(fun,[0.1 180]);
+theta_f = fzero(fun,[180 360]);
 
 
 end

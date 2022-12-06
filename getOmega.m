@@ -1,4 +1,4 @@
-function [w_2] = getOmega(Tavg,I_flywheel,T,theta_2)
+function [COF_act,w_2] = getOmega(Tavg,I_flywheel,T,theta_2)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  FUNCTION NAME: getCheck
 %
@@ -12,6 +12,7 @@ function [w_2] = getOmega(Tavg,I_flywheel,T,theta_2)
 %
 %  OUTPUT:
 %	w_2: angular velocity of the crank (rad/s)
+%	COF_act: actual coefficient of fluctuation of our stirling engine
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -57,6 +58,8 @@ w_2 = w_2.'; % transpose to make it a row vector
 
 w2_Min = min(w_2);       % in rad/s
 w2_Max = max(w_2);       % in rad/s
+
+COF_act = (w2_max-w2_min)/w_avg;
 if w2_Max <= COF*w_avg+w2_Min && w2_Min >= -COF*w_avg+w2_Max
     disp('The angular velocity of the crank is within the bounds')
 else
