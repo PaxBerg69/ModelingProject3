@@ -84,7 +84,8 @@ deltaKE = getDeltaKE(theta0, thetaF, Tavg, torque, theta2);
 I = getI(deltaKE,Cf,omega_avg);
 [flywheelDiaO] = getFlywheelsize(I);
 [COF_act,w_2] = getOmega(Tavg,I,torque,theta2);
-printOutput(theta2,theta0,torque,0,flywheelDiaO,P,volumeT,w_2,Pbot,Ptop, P1, P2, P3, P4);
+power = Tavg*omega_avg/1000; % in kW
+printOutput(theta2,ydisplacer,ypower,torque,power,flywheelDiaO,P,volumeE,volumeC,volumeT,w_2,Pbot,Ptop, P1, P2, P3, P4);
 
 %% Parameter Vary
 figure(5)
