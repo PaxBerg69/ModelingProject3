@@ -54,7 +54,7 @@ minVol = min(volumeT);
 maxVol = max(volumeT);
 volRange = linspace(minVol, maxVol, 3600);
 
-% P-V diagram
+% P-V diagram (pressure converted to kPa)
 figure;
 plot(volumeT,P/1000);
 hold on;
@@ -66,6 +66,7 @@ line([minVol, minVol],[P2,P1]/1000,'Color','R');
 line([maxVol,maxVol],[P4,P3]/1000,'Color','R');
 legend('Actual','Ideal');
 title('P-V Diagram of the Engine vs. Ideal');
+xlim([1.6e-04 3.0e-04]);
 hold off;
 
 % plot torque vs theta2
@@ -74,6 +75,7 @@ plot(theta2,torque);
 xlabel('Crank Angle (deg)');
 ylabel('Engine Torque (N*m)');
 title('Engine Torque vs Crank Angle');
+xlim([0 360]);
 
 % plot w_2 vs theta2
 figure;
@@ -84,4 +86,5 @@ ylabel('Angular Velocity of Flywheel (rad/s)');
 title('Flywheel Angular Velocity vs Crank Angle');
 ylim([208.5 210.5]);
 xlim([0 360]);
+hold off;
 end

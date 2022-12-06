@@ -1,4 +1,4 @@
-function [ theta_0, theta_f, w_0]  = getThetas(T, T_avg)
+function [theta_0, theta_f]  = getThetas(T, T_avg)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  FUNCTION NAME: getThetas
 %
@@ -11,7 +11,6 @@ function [ theta_0, theta_f, w_0]  = getThetas(T, T_avg)
 %  OUTPUTS
 %   theta_0: crank angle where energy is being added to the flywheel (deg)
 %   theta_f: crank angle where energy is removed from the flywheel (deg)
-%	w_0: angular velocity where energy is being added to the flywheel (rad)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %  AUTHOR: Trey Weber

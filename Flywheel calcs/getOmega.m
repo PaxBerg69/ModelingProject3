@@ -28,14 +28,13 @@ function [COF_act,w_2] = getOmega(Tavg,I_flywheel,T,theta_2)
 %	w2_max: maximum angular velocity of the flywheel (rad/s)
 % 
 %  FUNCTIONS CALLED 
-%	getdiffEQ: function handle defining the differential equation to be
+%	diffEQ: function handle defining the differential equation to be
 %	used in ode45
 %	ode45: differential equation solver
 %	min: minimum value of an array
 %	max: maximum value of an array
 %
 %  START OF EXECUTABLE CODE
-COF = 0.002;
 w_avg = 2000*2*pi/60;
 
 % convert to radians
@@ -59,18 +58,25 @@ w_2 = w_2.'; % transpose to make it a row vector
 w2_Min = min(w_2);       % in rad/s
 w2_Max = max(w_2);       % in rad/s
 
+% calculate the coefficient of fluctuation for our engine
 COF_act = (w2_Max-w2_Min)/w_avg;
 end  % ends the getCheck function
 
 function [dwdtheta] = diffEQ(T,T_avg,I,w,Theta_2)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%  FUNCTION NAME: getdiffEQ
+%  FUNCTION NAME: diffEQ
 %
-%  PURPOSE: create the equation for ode45 to use
+%  PURPOSE: create the sum of torques equation for ode45 to use
 %
-%  INPUT: T,T_avg,I,w,Theta  
+%  INPUT: 
+%	T: torque of the engine (N*m)
+%	T_avg: average torque of the engine (N*m)
+%	I: mass moment of inertia of the flywheel (kg*m^2)
+%	w: rotational velocity of the flywheel (rad/s)
+%	Theta_2: crank angle of the engine (rad)  
 %
-%  OUTPUT: dydt, the differential eqution to be used by ode45
+%  OUTPUT: 
+%	dwdtheta: derivative of omega with respect to theta_2
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
@@ -85,6 +91,7 @@ function [dwdtheta] = diffEQ(T,T_avg,I,w,Theta_2)
 % find the index in the torque array corresponding to the input theta value
 index = round(Theta_2/(2*pi/3600));
 
+% make sure that the index doesn't exceed the bounds
 if index <= 3600
 	dwdtheta = (T(index)-T_avg)/(I*w);   % the diffeq to find w
 else
