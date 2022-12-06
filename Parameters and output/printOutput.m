@@ -1,10 +1,11 @@
-function [] = printOutput(theta2,ydisplacer,ypower,torque,power,FlywheeldiaO,P,volumeE,volumeC,volumeT,w_2, Pbot, Ptop, P1, P2, P3, P4)
-%fprintf(torque);
-%fprintf(power);
-%fprintf(FlywheeldiaO);
-
+function [] = printOutput(theta2,ydisplacer,ypower,torque,power,FlywheeldiaO,P,volumeE,volumeC,volumeT,w_2,COF_act, Pbot, Ptop, P1, P2, P3, P4)
+fprintf('Average Engine Power: %f (kW)\n',power);
+fprintf('Flywheel Outer Diameter: %f (m)\n',FlywheeldiaO);
+fprintf('Engine Coefficient of Fluctuation: %f\n',COF_act);
 %% Plotting
-figure(1);
+
+% Piston Positions vs Crank Angle
+figure;
 hold on
 plot(theta2, ypower);
 plot(theta2, ydisplacer);
@@ -15,7 +16,8 @@ xlim([0 360]);
 title('Piston Positions vs Crank Angle');
 hold off
 
-figure(2);
+% Volume vs Crank Angle
+figure;
 hold on
 plot(theta2,volumeE);
 xlabel('Crank Angle [deg]')
@@ -31,25 +33,34 @@ minVol = min(volumeT);
 maxVol = max(volumeT);
 volRange = linspace(minVol, maxVol, 3600);
 
-% Ideal
-figure(3);
-plot(volumeT,P);
+% P-V diagram
+figure;
+plot(volumeT,P/1000);
 hold on;
-plot(volRange, Ptop, 'color','red')
-plot(volRange, Pbot,'color','red');
+plot(volRange, Ptop/1000, 'color','red')
+plot(volRange, Pbot/1000,'color','red');
 xlabel('Volume [m^3]');
-ylabel('Pressure [Pa]');
-line([minVol, minVol],[P2,P1],'Color','R');
-line([maxVol,maxVol],[P4,P3],'Color','R');
+ylabel('Pressure [kPa]');
+line([minVol, minVol],[P2,P1]/1000,'Color','R');
+line([maxVol,maxVol],[P4,P3]/1000,'Color','R');
 legend('Actual','Ideal');
 title('P-V Diagram of the Engine vs. Ideal');
 hold off;
 
+% plot torque vs theta2
+figure;
+plot(theta2,torque);
+xlabel('Crank Angle (deg)');
+ylabel('Engine Torque (N*m)');
+title('Engine Torque vs Crank Angle');
+
 % plot w_2 vs theta2
-figure(4);
+figure;
+hold on;
 plot(theta2,w_2);
 xlabel('Crank Angle (deg)');
 ylabel('Angular Velocity of Flywheel (rad/s)');
 title('Flywheel Angular Velocity vs Crank Angle');
+ylim([208.5 210.5]);
 xlim([0 360]);
 end

@@ -85,11 +85,11 @@ I = getI(deltaKE,Cf,omega_avg);
 [flywheelDiaO] = getFlywheelsize(I);
 [COF_act,w_2] = getOmega(Tavg,I,torque,theta2);
 power = Tavg*omega_avg/1000; % in kW
-printOutput(theta2,ydisplacer,ypower,torque,power,flywheelDiaO,P,volumeE,volumeC,volumeT,w_2,Pbot,Ptop, P1, P2, P3, P4);
+printOutput(theta2,ydisplacer,ypower,torque,power,flywheelDiaO,P,volumeE,volumeC,volumeT,w_2,COF_act,Pbot,Ptop, P1, P2, P3, P4);
 
 %% Parameter Vary
-figure(5)
-hold;
+figure;
+hold on;
 plotResolution = 25;
 Thigh = linspace(400,2000,plotResolution);
 powerV = zeros(1,plotResolution);
@@ -114,6 +114,7 @@ w_2 = getOmega(Tavg,I,torque,theta2);
 powerV(j) = Tavg*omega_avg/1000;
 [COF_act,w_2] = getOmega(Tavg,I,torque,theta2);
 end
+hold off
 
 plot(Thigh, powerV);
 title('Power Output as a Function of Te');
