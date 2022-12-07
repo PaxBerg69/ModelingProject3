@@ -1,4 +1,4 @@
-function [COF_act,w_2] = getOmega(Tavg,I_flywheel,T,theta_2)
+function [COF_act,w_2i] = getOmega(Tavg,I_flywheel,T,theta_2)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  FUNCTION NAME: getCheck
 %
@@ -22,8 +22,9 @@ function [COF_act,w_2] = getOmega(Tavg,I_flywheel,T,theta_2)
 %  DESCRIPTION OF LOCAL VARIABLES
 %	COF: coefficient of fluctuation allowed for the flywheel
 %	w_0: minimum angular velocity of the flywheel (rad/s)
-%	theta_array: array from theta_0 to theta_0 on the next cycle used in
-%				 ode45 (deg)
+%	w_2i: initial guess of w_2 using w_avg as the initial condition for
+%	ode45 (rad/s)
+%	w2i_avg: average value of the initial guess (rad/s)
 %	w2_min: minimum angular velocity of the flywheel (rad/s)
 %	w2_max: maximum angular velocity of the flywheel (rad/s)
 %	w2_avg: average value of the angular velocity (rad/s)
@@ -46,12 +47,12 @@ theta_2 = deg2rad(theta_2);
 fun = @(Theta_2,w_2) diffEQ(T,Tavg,I_flywheel,w_2,Theta_2);
 
 % run an initial guess with initial condition at w_avg
-[theta_2,w_2] = ode45(fun,theta_2,w_avg);
-w_2 = w_2.'; % transpose to make it a row vector
+[theta_2,w_2i] = ode45(fun,theta_2,w_avg);
+w_2i = w_2i.'; % transpose to make it a row vector
 
 % calculate the actual average of the initial guess
-w2_avg = trapz(theta_2,w_2)/(2*pi);
-offset = w2_avg-w_avg;
+w2i_avg = trapz(theta_2,w_2i)/(2*pi);
+offset = w2i_avg-w_avg;
 
 % make a new guess but offset the IC by the difference in averages
 [theta_2,w_2] = ode45(fun,theta_2,w_avg-offset);

@@ -48,6 +48,7 @@ plot(theta2,volumeT);
 legend('VolumeE', 'VolumeC', 'Total Volume');
 title('Region Volumes vs. Crank Angle');
 xlim([0 360]);
+ylim([0 4e-04]);
 hold off
 
 minVol = min(volumeT);
@@ -86,7 +87,7 @@ ylabel('Angular Velocity of Flywheel (rad/s)');
 title('Flywheel Angular Velocity vs Crank Angle');
 yline(209.23);
 yline(209.65);
-ylim([208.5 210.5]);
+ylim([208 211]);
 xlim([0 360]);
 legend('Flywheel Angular Velocity','Allowable Range');
 hold off;
