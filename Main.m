@@ -47,8 +47,6 @@ length.CD = 0.0705;
 %Array Setup
 theta2 = linspace(0.1,360,3600);
 torque = zeros(1,3600);
-Pbot = zeros(1,3600);
-Ptop = zeros(1,3600);
 
 %Pressure values
 Pmin = 500000; %[Pa] 
