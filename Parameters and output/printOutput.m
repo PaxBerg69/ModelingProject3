@@ -19,7 +19,7 @@
 %  NA
 %
 %  START OF EXECUTABLE CODE
-function [] = printOutput(theta2,ydisplacer,ypower,torque,power,FlywheeldiaO,P,volumeE,volumeC,volumeT,w_2,COF_act, Pbot, Ptop, P1, P2, P3, P4, pvPower, cycPower)
+function [] = printOutput(theta2,ydisplacer,ypower,torque,power,FlywheeldiaO,P,Mtot,volumeE,volumeC,volumeT,w_2,COF_act, Pbot, Ptop, P1, P2, P3, P4, pvPower, cycPower)
 fprintf('Flywheel Outer Diameter: %f m\n',FlywheeldiaO);
 fprintf('Engine Coefficient of Fluctuation: %f\n',COF_act);
 %% Plotting
@@ -54,19 +54,20 @@ minVol = min(volumeT);
 maxVol = max(volumeT);
 volRange = linspace(minVol, maxVol, 3600);
 
-% P-V diagram (pressure converted to kPa)
+% P-V diagram (pressure converted to kPa, volume converted to specific)
 figure;
-plot(volumeT,P/1000);
+plot(volumeT/Mtot,P/1000);
 hold on;
-plot(volRange, Ptop/1000, 'color','red')
-plot(volRange, Pbot/1000,'color','red');
-xlabel('Volume [m^3]');
+plot(volRange/Mtot, Ptop/1000, 'color','red')
+plot(volRange/Mtot, Pbot/1000,'color','red');
+xlabel('Specific Volume [m^3/kg]');
 ylabel('Pressure [kPa]');
-line([minVol, minVol],[P2,P1]/1000,'Color','R');
-line([maxVol,maxVol],[P4,P3]/1000,'Color','R');
+line([minVol, minVol]/Mtot,[P2,P1]/1000,'Color','R');
+line([maxVol,maxVol]/Mtot,[P4,P3]/1000,'Color','R');
 legend('Actual','Ideal');
 title('P-V Diagram of the Engine vs. Ideal');
-xlim([1.6e-04 3.0e-04]);
+xlim([0.14 0.28]);
+ylim([200 1800]);
 hold off;
 
 % plot torque vs theta2

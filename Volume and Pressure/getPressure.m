@@ -1,4 +1,4 @@
-function[P] = getPressure(Pmin,volumeC,volumeE,volumeR,Tc,Te,theta2)
+function[P,Mtot] = getPressure(Pmin,volumeC,volumeE,volumeR,Tc,Te,theta2)
 Tr =(Tc+Te)/2;
 R = 287.039;   % Gas constant in PaM^3/KgK 
 % Assume we start at BDC, since we know pressure there.

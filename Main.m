@@ -70,7 +70,7 @@ crank.angleD = 90 : 0.1 : 450;
 [volumeE] = getVolumeE(cylD,ydisplacer);
 [volumeC] = getVolumeC(ydisplacer, ypower, cylD);
 volumeT = volumeE+volumeC+volumeR;
-[P] = getPressure(Pmin,volumeC,volumeE,volumeR,Tc,Te,theta2);
+[P,Mtot] = getPressure(Pmin,volumeC,volumeE,volumeR,Tc,Te,theta2);
 [ P1, P2, P3, P4, Ptop, Pbot ]  = getIdeal( P, volumeC, volumeR, volumeE, Pbot, Ptop, Pmin );
 Fp = getFp(P);
 [torque] = getTorque(Fp,length,theta2, torque, theta3power);
@@ -82,7 +82,7 @@ I = getI(deltaKE,Cf,omega_avg);
 [COF_act,w_2] = getOmega(Tavg,I,torque,theta2);
 power = Tavg*omega_avg/1000; % in kW
 [pvPower, cycPower ] = getpvPower( P, volumeT, Ptop, Pbot, omega_avg );
-printOutput(theta2,ydisplacer,ypower,torque,power,flywheelDiaO,P,volumeE,volumeC,volumeT,w_2,COF_act,Pbot,Ptop, P1, P2, P3, P4, pvPower, cycPower);
+printOutput(theta2,ydisplacer,ypower,torque,power,flywheelDiaO,P,Mtot,volumeE,volumeC,volumeT,w_2,COF_act,Pbot,Ptop, P1, P2, P3, P4, pvPower, cycPower);
 
 %% Parameter Vary
 figure;
