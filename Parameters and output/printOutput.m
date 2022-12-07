@@ -84,6 +84,8 @@ plot(theta2,w_2);
 xlabel('Crank Angle (deg)');
 ylabel('Angular Velocity of Flywheel (rad/s)');
 title('Flywheel Angular Velocity vs Crank Angle');
+yline(209.23);
+yline(209.65);
 ylim([208.5 210.5]);
 xlim([0 360]);
 hold off;
