@@ -1,4 +1,3 @@
-
 function [torque]  = getTorque( Fp, length, theta2, torque, theta3power )
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  FUNCTION NAME: getTorque

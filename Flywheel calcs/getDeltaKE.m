@@ -1,4 +1,3 @@
-
 function [ deltaKE  ]  = getDeltaKE( theta0, thetaF, Tavg, torque, theta2)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  FUNCTION NAME: getDeltaKE
