@@ -20,7 +20,7 @@
 %
 %  START OF EXECUTABLE CODE
 function [] = printOutput(theta2,ydisplacer,ypower,torque,power,FlywheeldiaO,P,volumeE,volumeC,volumeT,w_2,COF_act, Pbot, Ptop, P1, P2, P3, P4, pvPower, cycPower)
-fprintf('Flywheel Outer Diameter: %f (m)\n',FlywheeldiaO);
+fprintf('Flywheel Outer Diameter: %f m\n',FlywheeldiaO);
 fprintf('Engine Coefficient of Fluctuation: %f\n',COF_act);
 %% Plotting
 

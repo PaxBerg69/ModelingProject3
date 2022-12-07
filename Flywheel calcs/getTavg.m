@@ -19,7 +19,10 @@ function [ T_avg ]  = getTavg(theta2,T)
 %  FUNCTIONS CALLED
 %   trapz: trapezoidal numerical integration
 %  START OF EXECUTABLE CODE
+% convert theta2 to radians
+theta2 = deg2rad(theta2);
+
 % use the trapz function to calculate the average torque over the input
 % theta array
-T_avg = trapz(theta2,T)/(360.0);
+T_avg = trapz(theta2,T)/(2*pi);
 end
