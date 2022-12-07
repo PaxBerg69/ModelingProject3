@@ -19,8 +19,7 @@
 %  NA
 %
 %  START OF EXECUTABLE CODE
-function [] = printOutput(theta2,ydisplacer,ypower,torque,power,FlywheeldiaO,P,volumeE,volumeC,volumeT,w_2,COF_act, Pbot, Ptop, P1, P2, P3, P4)
-fprintf('Average Engine Power: %f (kW)\n',power);
+function [] = printOutput(theta2,ydisplacer,ypower,torque,power,FlywheeldiaO,P,volumeE,volumeC,volumeT,w_2,COF_act, Pbot, Ptop, P1, P2, P3, P4, pvPower, cycPower)
 fprintf('Flywheel Outer Diameter: %f (m)\n',FlywheeldiaO);
 fprintf('Engine Coefficient of Fluctuation: %f\n',COF_act);
 %% Plotting
@@ -91,4 +90,17 @@ ylim([208 211]);
 xlim([0 360]);
 legend('Flywheel Angular Velocity','Allowable Range');
 hold off;
+
+fprintf('\n\nPower from the average torque and angular speed - ');
+fprintf('%f',power);
+fprintf(' kW');
+fprintf('\n\nPower from the P-V plot - ');
+fprintf('%f',pvPower);
+fprintf(' kW');
+fprintf('\n\nIdealized power from the stirling cycle - ');
+fprintf('%f',cycPower);
+fprintf(' kW');
+fprintf('\n\nPV power as a percent of idealized power - ');
+fprintf('%f',pvPower/cycPower);
+fprintf('%');
 end
