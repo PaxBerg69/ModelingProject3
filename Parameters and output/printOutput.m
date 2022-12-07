@@ -91,16 +91,15 @@ xlim([0 360]);
 legend('Flywheel Angular Velocity','Allowable Range');
 hold off;
 
-fprintf('\n\nPower from the average torque and angular speed - ');
+fprintf('\n\nPower from the average torque and angular speed: ');
 fprintf('%f',power);
 fprintf(' kW');
-fprintf('\n\nPower from the P-V plot - ');
+fprintf('\n\nPower from the P-V plot: ');
 fprintf('%f',pvPower);
 fprintf(' kW');
-fprintf('\n\nIdealized power from the stirling cycle - ');
+fprintf('\n\nIdealized power from the stirling cycle: ');
 fprintf('%f',cycPower);
 fprintf(' kW');
-fprintf('\n\nPV power as a percent of idealized power - ');
-fprintf('%f',pvPower/cycPower);
-fprintf('%');
+fprintf('\n\nPV power as a percent of idealized power: ');
+fprintf('%f\n',pvPower/cycPower);
 end
