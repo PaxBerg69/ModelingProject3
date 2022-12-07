@@ -1,12 +1,3 @@
-%DELETE COMMENTED PORTION BELOW IF PRESSURE IS A 3600 ITEM ARRAY AND AN FP
-%ARRAY IS DEFINED IN MAIN
-
-
-% pressure = linspace(0,200,3600);
-% Fp = zeros(1,3600);
-% 
-% Fp = getFp(pressure);
-
 function [ Fp ]  = getFp( pressure )
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  FUNCTION NAME: getFp
@@ -24,6 +15,7 @@ function [ Fp ]  = getFp( pressure )
 %
 %  DESCRIPTION OF LOCAL VARIABLES
 %     diam - diameter of bore in meters
+%     Patm - atmospheric pressure in kPa
 %
 %  FUNCTIONS CALLED
 %   None
@@ -32,7 +24,7 @@ function [ Fp ]  = getFp( pressure )
 %
 
 Patm = 101.3*1000;  %Patm in Pa
-diam = 0.07;            %diameter of bore in meters
-Fp = (pressure-Patm) * (pi/4) * diam.^2;    %force on piston in N
+diam = 0.07;     %diameter of bore in meters
+Fp = (pressure-Patm) * (pi/4) * diam.^2;    %force on piston in N is pressure times area (take difference between observed and actual
 
 end

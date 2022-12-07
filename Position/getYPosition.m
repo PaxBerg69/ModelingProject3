@@ -3,7 +3,7 @@ function [ ydisplacer, ypower ]  = getYPosition( theta2, theta3displacer, theta3
 %  FUNCTION NAME: getYPosition
 %
 %  PURPOSE: Calculate the y position of the displacer and the power piston
-%  relative to the ground pivot
+%  relative to the ground pivot (meters)
 %
 %  INPUT: theta2 - angle of driver link in degrees
 %         theta3displacer,power - angle of connector links in degrees
@@ -19,6 +19,7 @@ function [ ydisplacer, ypower ]  = getYPosition( theta2, theta3displacer, theta3
 %  DATE: 12/2/2022
 %
 %  DESCRIPTION OF LOCAL VARIABLES
+%   None
 %
 %  FUNCTIONS CALLED
 %   None
@@ -28,7 +29,7 @@ function [ ydisplacer, ypower ]  = getYPosition( theta2, theta3displacer, theta3
 
 for z = 1:3600 
     ydisplacer(z) = length.OaC * sind(theta2(z)) + length.CD * sind(theta3displacer(z));
-    ypower(z) = length.OaA * sind(theta2(z)-90.0) + length.AB * sind(theta3power(z));
+    ypower(z) = length.OaA * sind(theta2(z)-90.0) + length.AB * sind(theta3power(z));   %the y position can be determined by taking the y component of the driver and connector links and adding them together
 
 end
 

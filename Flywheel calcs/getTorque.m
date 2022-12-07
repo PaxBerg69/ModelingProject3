@@ -1,4 +1,3 @@
-
 function [torque]  = getTorque( Fp, length, theta2, torque, theta3power )
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  FUNCTION NAME: getTorque
@@ -18,20 +17,15 @@ function [torque]  = getTorque( Fp, length, theta2, torque, theta3power )
 %  DESCRIPTION OF LOCAL VARIABLES
 %
 %  FUNCTIONS CALLED
-%   None
+%   length.AG3, length.BG3 - distance from connector pins to center of mass
+%   of the third link in meters
+%   A, B, C - matrices for kinetostatic analysis
 %
 %  START OF EXECUTABLE CODE
 %
 
 length.AG3 = length.AB / 2.0;
-length.BG3 = length.AB / 2.0;
-
-F12x = zeros(1,3600);
-F12y = zeros(1,3600);
-F23x = zeros(1,3600);
-F23y = zeros(1,3600);
-F34x = zeros(1,3600);
-F34y = zeros(1,3600);
+length.BG3 = length.AB / 2.0;    %define distance from points A and B to the center of mass of the connector link (assumed to be the middle);
 
 for z = 1:3600
     A = [1 0 -1 0 0 0 0; 0 1 0 -1 0 0 0; 0 0 length.OaA*sind(theta2(z)) -length.OaA*cosd(theta2(z)) 0 0 1; 0 0 1 0 -1 0 0; 0 0 0 1 0 -1 0; 0 0 -length.AG3*sind(theta3power(z)-180) length.AG3*cosd(theta3power(z)-180) length.BG3*sind(theta3power(z)) -length.BG3*cosd(theta3power(z)) 0; 0 0 0 0 0 1 0];  %matrix with coefficients in front of each force/torque
