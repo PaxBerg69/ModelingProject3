@@ -30,8 +30,8 @@ hold on
 plot(theta2, ypower);
 plot(theta2, ydisplacer);
 legend('power piston', 'displacer piston');
-xlabel('theta2 (deg)');
-ylabel('y position (m)');
+xlabel('Crank Angle (deg)');
+ylabel('y Position (m)');
 xlim([0 360]);
 title('Piston Positions vs Crank Angle');
 hold off
