@@ -55,19 +55,11 @@ offset = w_2avg-w_avg;
 [theta_2,w_2] = ode45(fun,theta_2,w_avg-offset);
 w_2 = w_2.'; % transpose to make it a row vector
 
-% calculate the actual average of the next guess
-w_2avg = trapz(theta_2,w_2)/(2*pi);
-offset_2 = w_2avg-w_avg
-
-% make a new guess but offset the IC by the difference in averages
-[theta_2,w_2] = ode45(fun,theta_2,w_avg-offset-offset_2);
-w_2 = w_2.'; % transpose to make it a row vector
-
 w2_Min = min(w_2);       % in rad/s
 w2_Max = max(w_2);       % in rad/s
 
 % calculate the coefficient of fluctuation for our engine
-COF_act = (w2_Max-w2_Min)/w_avg;
+COF_act = (w2_Max-w2_Min)/w_2avg;
 end  % ends the getCheck function
 
 function [dwdtheta] = diffEQ(T,T_avg,I,w,Theta_2)
