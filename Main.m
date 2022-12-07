@@ -105,7 +105,6 @@ for j = 1:plotResolution
     deltaKE = getDeltaKE(theta0, thetaF, Tavg, torque, theta2);
     I = getI(deltaKE,Cf,omega_avg);
     Dvary(j) = 1000*getFlywheelsize(I);
-    w_2 = getOmega(Tavg,I,torque,theta2);
     powerV(j) = Tavg*omega_avg/1000;
     [COF_act,w_2] = getOmega(Tavg,I,torque,theta2);
 end
