@@ -1,6 +1,3 @@
-%CAN DELETE COMMENTED PORTION BELOW IF VARIABLES ARE DEFINED IN MAIN
-
-
 function [ theta3displacer, theta3power ]  = getTheta3(length,theta2)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  FUNCTION NAME: getTheta3
@@ -32,9 +29,10 @@ function [ theta3displacer, theta3power ]  = getTheta3(length,theta2)
 %
 %% Establish original link length in vector form
 
-thetaS = 90.0 * (6.28/360);
+thetaS = 90.0 * (6.28/360);   %angle of the S vector in degrees (pivot --> load)
 
-% For the displacer piston
+% For the displacer piston - define driver (D) and connectors (C) in
+% rotated domain
 for z = 1:3600
 
     vec.D = length.OaC * (cosd(theta2(z)) + i*sind(theta2(z)));   %define driving vector (link 2) in vector form
@@ -49,7 +47,7 @@ for z = 1:3600
     theta3displacer(z) = theta3star + thetaS * (360/6.28);   %find angle of connector relative to GCS by rotating back by thetaS
 end
 
-%for the power piston
+%for the power piston, do the same thing
 theta2disp = zeros(1,360);
 for z = 1:3600
     theta2disp(z) = theta2(z) - 90;
@@ -64,7 +62,6 @@ for z = 1:3600
     theta3star = atand(vec.Cystar / vec.Cxstar);  
     theta3power(z) = theta3star + thetaS * (360/6.28);   %find angle of connector relative to GCS by rotating back by thetaS
 end
-
 
 end
 

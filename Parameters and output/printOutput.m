@@ -19,9 +19,8 @@
 %  NA
 %
 %  START OF EXECUTABLE CODE
-function [] = printOutput(theta2,ydisplacer,ypower,torque,power,FlywheeldiaO,P,volumeE,volumeC,volumeT,w_2,COF_act, Pbot, Ptop, P1, P2, P3, P4)
-fprintf('Average Engine Power: %f (kW)\n',power);
-fprintf('Flywheel Outer Diameter: %f (m)\n',FlywheeldiaO);
+function [] = printOutput(theta2,ydisplacer,ypower,torque,power,FlywheeldiaO,P,Mtot,volumeE,volumeC,volumeT,w_2,COF_act, Pbot, Ptop, P1, P2, P3, P4, pvPower, cycPower)
+fprintf('Flywheel Outer Diameter: %f m\n',FlywheeldiaO);
 fprintf('Engine Coefficient of Fluctuation: %f\n',COF_act);
 %% Plotting
 
@@ -48,24 +47,27 @@ plot(theta2,volumeT);
 legend('VolumeE', 'VolumeC', 'Total Volume');
 title('Region Volumes vs. Crank Angle');
 xlim([0 360]);
+ylim([0 4e-04]);
 hold off
 
 minVol = min(volumeT);
 maxVol = max(volumeT);
 volRange = linspace(minVol, maxVol, 3600);
 
-% P-V diagram
+% P-V diagram (pressure converted to kPa, volume converted to specific)
 figure;
-plot(volumeT,P/1000);
+plot(volumeT/Mtot,P/1000);
 hold on;
-plot(volRange, Ptop/1000, 'color','red')
-plot(volRange, Pbot/1000,'color','red');
-xlabel('Volume [m^3]');
+plot(volRange/Mtot, Ptop/1000, 'color','red')
+plot(volRange/Mtot, Pbot/1000,'color','red');
+xlabel('Specific Volume [m^3/kg]');
 ylabel('Pressure [kPa]');
-line([minVol, minVol],[P2,P1]/1000,'Color','R');
-line([maxVol,maxVol],[P4,P3]/1000,'Color','R');
+line([minVol, minVol]/Mtot,[P2,P1]/1000,'Color','R');
+line([maxVol,maxVol]/Mtot,[P4,P3]/1000,'Color','R');
 legend('Actual','Ideal');
 title('P-V Diagram of the Engine vs. Ideal');
+xlim([0.14 0.28]);
+ylim([200 1800]);
 hold off;
 
 % plot torque vs theta2
@@ -74,6 +76,7 @@ plot(theta2,torque);
 xlabel('Crank Angle (deg)');
 ylabel('Engine Torque (N*m)');
 title('Engine Torque vs Crank Angle');
+xlim([0 360]);
 
 % plot w_2 vs theta2
 figure;
@@ -82,6 +85,15 @@ plot(theta2,w_2);
 xlabel('Crank Angle (deg)');
 ylabel('Angular Velocity of Flywheel (rad/s)');
 title('Flywheel Angular Velocity vs Crank Angle');
-ylim([208.5 210.5]);
+yline(209.23);
+yline(209.65);
+ylim([208 211]);
 xlim([0 360]);
+legend('Flywheel Angular Velocity','Allowable Range');
+hold off;
+
+fprintf('\nPower from the average torque and angular speed: %f kW ',power);
+fprintf('\nPower from the P-V plot: %f kW ',pvPower);
+fprintf('\nIdealized power from the stirling cycle: %f kW ',cycPower);
+fprintf('\nPV power as a percent of idealized power: %f percent\n',100*pvPower/cycPower);
 end
