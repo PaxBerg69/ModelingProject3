@@ -45,12 +45,7 @@ length.AB = 0.046;
 length.CD = 0.0705;
 
 %Array Setup
-theta3displacer = zeros(1,3600);
-theta3power = zeros(1,3600);
 theta2 = linspace(0.1,360,3600);
-ydisplacer = zeros(1,3600);
-ypower = zeros(1,3600);
-Fp = zeros(1,3600);
 torque = zeros(1,3600);
 Pbot = zeros(1,3600);
 Ptop = zeros(1,3600);
@@ -60,14 +55,8 @@ Pmin = 500000; %[Pa]
 Tc = 300;
 Te = 900;
 volumeR = 0.00001; %[m]
-theta0 = 0;
-thetaF = 0;
 
 % Flywheel values
-Density = 1;
-Width = 1;
-ri = 1;
-I = 1;
 Cf = 0.002;
 omega_avg = 2000*2*pi/60;
 
