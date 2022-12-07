@@ -69,7 +69,7 @@ Width = 1;
 ri = 1;
 I = 1;
 Cf = 0.002;
-omega_avg = 2000*0.10472;
+omega_avg = 2000*2*pi/60;
 
 %Crank plotting Values
 crank.angleP = 0 : 0.1 : 360;
