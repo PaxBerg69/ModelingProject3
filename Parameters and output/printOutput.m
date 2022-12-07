@@ -88,5 +88,6 @@ yline(209.23);
 yline(209.65);
 ylim([208.5 210.5]);
 xlim([0 360]);
+legend('Flywheel Angular Velocity','Allowable Range');
 hold off;
 end
