@@ -31,7 +31,7 @@ plot(theta2, ypower);
 plot(theta2, ydisplacer);
 legend('power piston', 'displacer piston');
 xlabel('theta2 (deg)');
-ylabel('theta3 (deg)');
+ylabel('y position (m)');
 xlim([0 360]);
 title('Piston Positions vs Crank Angle');
 hold off
