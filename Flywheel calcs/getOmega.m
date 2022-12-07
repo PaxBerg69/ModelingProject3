@@ -8,7 +8,7 @@ function [COF_act,w_2i] = getOmega(Tavg,I_flywheel,T,theta_2)
 %	Tavg: average torque for one cycle (N*m)
 %	I_flywheel: mass moment of inertia of the flywheel (kg*m^2)
 %	T: torque as a function of crank angle (N*m)
-%	Theta_0: crank angle where energy is being added to the flywheel (deg)
+%	Theta_2: crank angle of the flywheel (deg)
 %
 %  OUTPUT:
 %	w_2: angular velocity of the crank (rad/s)
@@ -20,8 +20,7 @@ function [COF_act,w_2i] = getOmega(Tavg,I_flywheel,T,theta_2)
 %  DATE:12/05/2022
 %
 %  DESCRIPTION OF LOCAL VARIABLES
-%	COF: coefficient of fluctuation allowed for the flywheel
-%	w_0: minimum angular velocity of the flywheel (rad/s)
+%	w_avg: average angular velocity of the flywheel (rad/s)
 %	w_2i: initial guess of w_2 using w_avg as the initial condition for
 %	ode45 (rad/s)
 %	w2i_avg: average value of the initial guess (rad/s)
@@ -36,7 +35,7 @@ function [COF_act,w_2i] = getOmega(Tavg,I_flywheel,T,theta_2)
 %	ode45: differential equation solver
 %	min: minimum value of an array
 %	max: maximum value of an array
-%
+%	trapz: trapezoidal numerical integration
 %  START OF EXECUTABLE CODE
 w_avg = 2000*2*pi/60;
 
