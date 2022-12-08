@@ -14,9 +14,7 @@
 %  Average Engine Power (kW), Flywheel outer diameter (m), Engine
 %  coefficient of fluctuation (-). Plot relevant parameters and trends
 %  associated with increased hot temps.
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-%  AUTHOR: Paxton Berger
+%  AUTHOR: Paxton Berger, Andrew Casar, Carter Zehr, Trey Weber
 %  DATE: 11/30/2022
 %
 %  DESCRIPTION OF LOCAL VARIABLES
@@ -25,7 +23,7 @@
 %  NA
 %
 %  START OF EXECUTABLE CODE
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 clc;
 close all;
 
@@ -45,30 +43,18 @@ length.AB = 0.046;
 length.CD = 0.0705;
 
 %Array Setup
-theta3displacer = zeros(1,3600);
-theta3power = zeros(1,3600);
 theta2 = linspace(0.1,360,3600);
-ydisplacer = zeros(1,3600);
-ypower = zeros(1,3600);
-Fp = zeros(1,3600);
 torque = zeros(1,3600);
-Pbot = zeros(1,3600);
-Ptop = zeros(1,3600);
 
 %Pressure values
 Pmin = 500000; %[Pa] 
 Tc = 300;
 Te = 900;
 volumeR = 0.00001; %[m]
-theta0 = 0;
-thetaF = 0;
 
 % Flywheel values
-Density = 1;
-Width = 1;
-ri = 1;
 Cf = 0.002;
-omega_avg = 2000*0.10472;
+omega_avg = 2000*2*pi/60;
 
 %Crank plotting Values
 crank.angleP = 0 : 0.1 : 360;
@@ -79,9 +65,9 @@ crank.angleD = 90 : 0.1 : 450;
 [ydisplacer, ypower ]  = getYPosition( theta2, theta3displacer, theta3power, length);
 [volumeE] = getVolumeE(cylD,ydisplacer);
 [volumeC] = getVolumeC(ydisplacer, ypower, cylD);
-volumeT = volumeE+volumeC;
-[P] = getPressure(Pmin,volumeC,volumeE,volumeR,Tc,Te,theta2);
-[P1,P2,P3,P4,Ptop,Pbot] = getIdeal(volumeC,volumeR,volumeE,Pmin);
+volumeT = volumeE+volumeC+volumeR;
+[P,Mtot] = getPressure(Pmin,volumeC,volumeE,volumeR,Tc,Te,theta2);
+[ P1, P2, P3, P4, Ptop, Pbot ]  = getIdeal(volumeC, volumeR, volumeE, Pmin );
 Fp = getFp(P);
 [torque] = getTorque(Fp,length,theta2, torque, theta3power);
 Tavg = getTavg(theta2, torque);
@@ -90,51 +76,16 @@ deltaKE = getDeltaKE(theta0, thetaF, Tavg, torque, theta2);
 I = getI(deltaKE,Cf,omega_avg);
 [flywheelDiaO] = getFlywheelsize(I);
 [COF_act,w_2] = getOmega(Tavg,I,torque,theta2);
+% first try was barely within range, try a new value by increasing I
+[COF_new,w_2new] = getOmega(Tavg,I+0.2,torque,theta2);
+[flywheelDiaO_new] = getFlywheelsize(I+0.2);
 power = Tavg*omega_avg/1000; % in kW
-printOutput(theta2,ydisplacer,ypower,torque,power,flywheelDiaO,P,volumeE,volumeC,volumeT,w_2,COF_act,Pbot,Ptop, P1, P2, P3, P4);
-
-%Parameter Vary
-figure;
-hold on;
-plotResolution = 25;
-Thigh = linspace(400,2000,plotResolution);
-powerV = zeros(1,plotResolution);
-Dvary = zeros(1,plotResolution);
-for j = 1:plotResolution
-    Te = Thigh(j);
-    [theta3displacer, theta3power] = getTheta3(length,theta2);
-    [ydisplacer, ypower ]  = getYPosition( theta2, theta3displacer, theta3power, length);
-    [volumeE] = getVolumeE(cylD,ydisplacer);
-    [volumeC] = getVolumeC(ydisplacer, ypower, cylD);
-    volumeT = volumeE+volumeC;
-    [P] = getPressure(Pmin,volumeC,volumeE,volumeR,Tc,Te,theta2);
-    [P1,P2,P3,P4,Ptop,Pbot]  = getIdeal(volumeC, volumeR, volumeE, Pmin );
-    Fp = getFp(P);
-    [torque] = getTorque(Fp,length,theta2, torque, theta3power);
-    Tavg = getTavg(theta2, torque);
-    [theta0, thetaF] = getThetas(torque, Tavg);
-    deltaKE = getDeltaKE(theta0, thetaF, Tavg, torque, theta2);
-    I = getI(deltaKE,Cf,omega_avg);
-    Dvary(j) = 1000*getFlywheelsize(I);
-    w_2 = getOmega(Tavg,I,torque,theta2);
-    powerV(j) = Tavg*omega_avg/1000;
-    [COF_act,w_2] = getOmega(Tavg,I,torque,theta2);
-end
-hold off
-
-plot(Thigh, powerV);
-title('Power Output as a Function of Te');
-xlabel('Expansion Temperature (K)');
-ylabel('Power Output (kW)');
-
-figure;
-plot(Thigh, Dvary);
-title('Flywheel Diameter as a Function of Te');
-xlabel('Expansion Temperature (K)');
-ylabel('Flywheel Diameter (mm)');
+[pvPower, cycPower ] = getpvPower(P,volumeT,Ptop,Pbot,omega_avg );
+printOutput(theta2,ydisplacer,ypower,torque,power,flywheelDiaO_new,P,Mtot,volumeE,volumeC,volumeT,w_2new,COF_new,Pbot,Ptop, P1, P2, P3, P4, pvPower, cycPower);
+getParamVary(Pmin,volumeR,Tc,theta2,length,cylD,Cf,omega_avg,torque);
 
 %% Function Definitions
-function [theta3displacer, theta3power]  = getTheta3(length,theta2)
+function [theta3displacer, theta3power] = getTheta3(length,theta2)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  FUNCTION NAME: getTheta3
 %
@@ -165,9 +116,10 @@ function [theta3displacer, theta3power]  = getTheta3(length,theta2)
 %
 %% Establish original link length in vector form
 
-thetaS = 90.0 * (6.28/360);
+thetaS = 90.0 * (6.28/360);   %angle of the S vector in degrees (pivot --> load)
 
-% For the displacer piston
+% For the displacer piston - define driver (D) and connectors (C) in
+% rotated domain
 for z = 1:3600
 
     vec.D = length.OaC * (cosd(theta2(z)) + i*sind(theta2(z)));   %define driving vector (link 2) in vector form
@@ -182,7 +134,7 @@ for z = 1:3600
     theta3displacer(z) = theta3star + thetaS * (360/6.28);   %find angle of connector relative to GCS by rotating back by thetaS
 end
 
-%for the power piston
+%for the power piston, do the same thing
 theta2disp = zeros(1,360);
 for z = 1:3600
     theta2disp(z) = theta2(z) - 90;
@@ -198,14 +150,13 @@ for z = 1:3600
     theta3power(z) = theta3star + thetaS * (360/6.28);   %find angle of connector relative to GCS by rotating back by thetaS
 end
 
-
 end
-function [ydisplacer, ypower]  = getYPosition( theta2, theta3displacer, theta3power, length )
+function [ydisplacer, ypower] = getYPosition(theta2, theta3displacer, theta3power, length )
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  FUNCTION NAME: getYPosition
 %
 %  PURPOSE: Calculate the y position of the displacer and the power piston
-%  relative to the ground pivot
+%  relative to the ground pivot (meters)
 %
 %  INPUT: theta2 - angle of driver link in degrees
 %         theta3displacer,power - angle of connector links in degrees
@@ -221,6 +172,7 @@ function [ydisplacer, ypower]  = getYPosition( theta2, theta3displacer, theta3po
 %  DATE: 12/2/2022
 %
 %  DESCRIPTION OF LOCAL VARIABLES
+%   None
 %
 %  FUNCTIONS CALLED
 %   None
@@ -230,13 +182,12 @@ function [ydisplacer, ypower]  = getYPosition( theta2, theta3displacer, theta3po
 
 for z = 1:3600 
     ydisplacer(z) = length.OaC * sind(theta2(z)) + length.CD * sind(theta3displacer(z));
-    ypower(z) = length.OaA * sind(theta2(z)-90.0) + length.AB * sind(theta3power(z));
+    ypower(z) = length.OaA * sind(theta2(z)-90.0) + length.AB * sind(theta3power(z));   %the y position can be determined by taking the y component of the driver and connector links and adding them together
 
 end
 
 end
 function [volumeE] = getVolumeE(cylD,ydisplacer)
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  FUNCTION NAME: Cylinder Volume Function
 %  PURPOSE 
@@ -260,22 +211,13 @@ function [volumeE] = getVolumeE(cylD,ydisplacer)
 %  START OF EXECUTABLE CODE
 %
 
+
 yEnd = 0.1048;
 
 volumeE = (yEnd-ydisplacer)*pi*0.25*cylD.bore^2;
 
-% cylC.Vd = cylC.stroke*pi*(cylC.bore^2)/4;
-% cylC.Vc = (cylC.CR-1)/cylC.Vd;
-% cylC.R = conRod.length/(cylC.stroke*0.5);
-% 
-% cylD.Vd = cylD.stroke*pi*(cylD.bore^2)/4;
-% cylD.Vc = (cylD.CR-1)/cylD.Vd;
-% cylD.R = conRod.length/(cylD.stroke*0.5);
-% 
-% volumeD = cylD.Vc*(1+(0.5)*(cylD.CR-1)*(cylD.R+1-cosd(crank.angleD)-((cylD.R^2)-sind(crank.angleD)).^0.5));
-% volumeP = (cylD.stroke*pi*0.25*cylD.bore^2)-volumeD;
 end
-function [volumeC]  = getVolumeC1(ydisplacer, ypower, cylD)
+function [volumeC] = getVolumeC(ydisplacer, ypower, cylD)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  FUNCTION NAME: getVolumeC
 %
@@ -300,17 +242,49 @@ function [volumeC]  = getVolumeC1(ydisplacer, ypower, cylD)
 %
 volumeC = 0.25*pi*(ydisplacer - ypower)*cylD.bore^2;
 end
-function [P] = getPressure(Pmin,volumeC,volumeE,volumeR,Tc,Te,theta2)
+function [P,Mtot] = getPressure(Pmin,volumeC,volumeE,volumeR,Tc,Te,theta2)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  FUNCTION NAME: getPressure
+%
+%  PURPOSE
+%	calculate the pressure as a function of crank angle
+%  INPUTS
+%	Pmin: minimum pressure in the cylinder (at BDC) (Pa)
+%	volumeC: compression volume as a function of crank angle (m^3)
+%	volumeE: expansion volume as a function of crank angle (m^3)
+%	volumeR: regenerator volume (m^3)
+%	Tc: temperature in the compression region (K)
+%	Te: temperature in the expansion region (K)
+%	theta2: crank angle of the flywheel (deg)
+%  OUTPUTS
+%	P: pressure as a function of crank angle (Pa)
+%	Mtot: total mass in the cylinder (kg)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%  AUTHOR: Andrew Casar
+%  DATE: 12/7/22
+%
+%  DESCRIPTION OF LOCAL VARIABLES
+%	Tr: temperature in the regenerator (K)
+%	R: ideal gas constant for air (Pa*m^3/kg*K)
+%  FUNCTIONS CALLED
+%	zeros: create an array of all zeros
+%	length: return the length of an array
+%  START OF EXECUTABLE CODE
+% calculate the regenerator temperature
 Tr =(Tc+Te)/2;
 R = 287.039;   % Gas constant in PaM^3/KgK 
-% Assume we start at BDC, since we know pressure there.
-Mtot = (Pmin/R)*(volumeC(1)/Tc+volumeE(1)/Te+volumeR(1)/Tr);
+
+% Start at BDC, since we know pressure there and can calc Mtot
+Mtot = (Pmin/R)*((volumeC(1)/Tc)+(volumeE(1)/Te)+(volumeR(1)/Tr));
+% use the fact that Mtot doesn't change to find P at all crank angles
 P = zeros(1,length(theta2));
 for i = 1:length(theta2) % get Pressure for all values of Theta 2. 
     P(i) = (Mtot*R)/((volumeC(i)/Tc+volumeE(i)/Te+volumeR/Tr));
 end   % Ends for loop
 end   % Ends getPressure function 
-function [P1,P2,P3,P4,Ptop,Pbot] = getIdeal(volumeC,volumeR,volumeE,Pmin )
+function [P1,P2,P3,P4,Ptop,Pbot] = getIdeal(volumeC, volumeR, volumeE, Pmin )
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  FUNCTION NAME: getIdeal
 %
@@ -373,7 +347,37 @@ Ptop = Mtot * R * Thigh ./ VolRange;
 Pbot = Mtot * R * Tlow ./ VolRange;
 
 end
-function [torque]  = getTorque( Fp, length, theta2, torque, theta3power )
+function [Fp] = getFp(pressure)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  FUNCTION NAME: getFp
+%
+%  PURPOSE: Return force on the piston as a function of theta2 (N)
+%
+%  INPUT: pressure - pressure as a function of theta2 in Pa
+%
+%  OUTPUT: Fp - force on piston as a function of theta2 in N
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%  AUTHOR: Carter Zehr
+%  DATE: 12/2/2022
+%
+%  DESCRIPTION OF LOCAL VARIABLES
+%     diam - diameter of bore in meters
+%     Patm - atmospheric pressure in kPa
+%
+%  FUNCTIONS CALLED
+%   None
+%
+%  START OF EXECUTABLE CODE
+%
+
+Patm = 101.3*1000;  %Patm in Pa
+diam = 0.07;     %diameter of bore in meters
+Fp = (pressure-Patm) * (pi/4) * diam.^2;    %force on piston in N is pressure times area (take difference between observed and actual
+
+end
+function [torque] = getTorque( Fp, length, theta2, torque, theta3power )
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  FUNCTION NAME: getTorque
 %
@@ -392,20 +396,15 @@ function [torque]  = getTorque( Fp, length, theta2, torque, theta3power )
 %  DESCRIPTION OF LOCAL VARIABLES
 %
 %  FUNCTIONS CALLED
-%   None
+%   length.AG3, length.BG3 - distance from connector pins to center of mass
+%   of the third link in meters
+%   A, B, C - matrices for kinetostatic analysis
 %
 %  START OF EXECUTABLE CODE
 %
 
 length.AG3 = length.AB / 2.0;
-length.BG3 = length.AB / 2.0;
-
-F12x = zeros(1,3600);
-F12y = zeros(1,3600);
-F23x = zeros(1,3600);
-F23y = zeros(1,3600);
-F34x = zeros(1,3600);
-F34y = zeros(1,3600);
+length.BG3 = length.AB / 2.0;    %define distance from points A and B to the center of mass of the connector link (assumed to be the middle);
 
 for z = 1:3600
     A = [1 0 -1 0 0 0 0; 0 1 0 -1 0 0 0; 0 0 length.OaA*sind(theta2(z)) -length.OaA*cosd(theta2(z)) 0 0 1; 0 0 1 0 -1 0 0; 0 0 0 1 0 -1 0; 0 0 -length.AG3*sind(theta3power(z)-180) length.AG3*cosd(theta3power(z)-180) length.BG3*sind(theta3power(z)) -length.BG3*cosd(theta3power(z)) 0; 0 0 0 0 0 1 0];  %matrix with coefficients in front of each force/torque
@@ -416,14 +415,14 @@ for z = 1:3600
     torque(z) = -B(7);    %establish each force/torque component according to matrix setup (see pdf for list of the 7 equations used)
 end
 end
-function [ T_avg ]  = getTavg(theta2,T)
+function [T_avg] = getTavg(theta2,T)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  FUNCTION NAME: getTavg
 %
 %  PURPOSE
 %   compute the average torque as a function of crank angle (theta)
 %  INPUTS
-%   theta2: array of crank angles (rad)
+%   theta2: array of crank angles (deg)
 %   T: torque as a function of crank angle (N*m)
 %  OUTPUT
 %   T_avg: average torque for one cycle (N*m)
@@ -437,11 +436,14 @@ function [ T_avg ]  = getTavg(theta2,T)
 %  FUNCTIONS CALLED
 %   trapz: trapezoidal numerical integration
 %  START OF EXECUTABLE CODE
+% convert theta2 to radians
+theta2 = deg2rad(theta2);
+
 % use the trapz function to calculate the average torque over the input
 % theta array
-T_avg = trapz(theta2,T)/(360.0);
+T_avg = trapz(theta2,T)/(2*pi);
 end
-function [ theta_0, theta_f, w_0]  = getThetas(T, T_avg)
+function [theta_0, theta_f] = getThetas(T, T_avg)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  FUNCTION NAME: getThetas
 %
@@ -454,7 +456,6 @@ function [ theta_0, theta_f, w_0]  = getThetas(T, T_avg)
 %  OUTPUTS
 %   theta_0: crank angle where energy is being added to the flywheel (deg)
 %   theta_f: crank angle where energy is removed from the flywheel (deg)
-%	w_0: angular velocity where energy is being added to the flywheel (rad)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %  AUTHOR: Trey Weber
@@ -476,9 +477,8 @@ fun = @(theta2) torqueDiff(theta2,T,T_avg);
 theta_0 = fzero(fun,[0.1 180]);
 theta_f = fzero(fun,[180 360]);
 
-
 end
-function [ T_diff ]  = torqueDiff(theta2, T, T_avg)
+function [T_diff] = torqueDiff(theta2, T, T_avg)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  FUNCTION NAME: torqueDiff
 %
@@ -509,7 +509,7 @@ index = round(theta2/(360/3600));
 % use the index above to calculate the difference in torques
 T_diff = T(index)-T_avg;
 end
-function [ deltaKE  ]  = getDeltaKE( theta0, thetaF, Tavg, torque, theta2)
+function [deltaKE] = getDeltaKE( theta0, thetaF, Tavg, torque, theta2)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  FUNCTION NAME: getDeltaKE
 %
@@ -526,6 +526,11 @@ function [ deltaKE  ]  = getDeltaKE( theta0, thetaF, Tavg, torque, theta2)
 %  DATE: 12/5/2022
 %
 %  DESCRIPTION OF LOCAL VARIABLES
+%   theta2, theta0, thetaF - redefinitions of angles to radians
+%   theta0check, thetaFcheck - array of thetas (theta2 - thetaX)
+%   theta0index, thetaFindex - index of theta0 and thetaF in the theta2
+%                              array
+%   bounds - section of theta2 from theta0 to thetaF
 %
 %  FUNCTIONS CALLED
 %   trapz
@@ -536,20 +541,20 @@ function [ deltaKE  ]  = getDeltaKE( theta0, thetaF, Tavg, torque, theta2)
 %convert to radians
 theta2 = deg2rad(theta2);
 theta0 = deg2rad(theta0);
-thetaF = deg2rad(thetaF);
+thetaF = deg2rad(thetaF);   %convert relevant angles to radians
 
 %set bounds of integration
 theta0check = theta2 - theta0;
 thetaFcheck = theta2 - thetaF;
 
 [minimum,theta0index] = min(abs(theta0check));
-[minimum,thetaFindex] = min(abs(thetaFcheck));
+[minimum,thetaFindex] = min(abs(thetaFcheck));   %determine indices of theta0 and thetaF within the theta2 array
 
-bounds = theta2(theta0index:thetaFindex);
-deltaKE = trapz(bounds, torque(theta0index:thetaFindex)-Tavg);
+bounds = theta2(theta0index:thetaFindex);    %define subsection of theta2 corresponding to theta0-thetaF domain
+deltaKE = trapz(bounds, torque(theta0index:thetaFindex)-Tavg);    %use trapz to determine area under the curve (kinetic energy absorbed by the flywheel)
 
 end
-function [ Iflywheel ]  = getI(KE, Cf, w_avg)
+function [Iflywheel] = getI(KE, Cf, w_avg)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  FUNCTION NAME: getI
 %
@@ -635,9 +640,9 @@ function[difference] = Idif(I,Density,Width,ri)
 %	none
 %  START OF EXECUTABLE CODE
 % from the moment of inertia equation of a hollow cylinder
-difference = (2*I/(Density*Width*pi)) - 0.00002401 - 0.001372*ri - 0.0588*ri^2 - 0.28*ri^3;
+difference = (2*I/(Density*Width*pi)) - 0.00002401 - 0.001372*ri - 0.0294*ri^2 - 0.28*ri^3;
 end   % ends difference function
-function [COF_act,w_2] = getOmega(Tavg,I_flywheel,T,theta_2)
+function [COF_act,w_2i] = getOmega(Tavg,I_flywheel,T,theta_2)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  FUNCTION NAME: getCheck
 %
@@ -647,7 +652,7 @@ function [COF_act,w_2] = getOmega(Tavg,I_flywheel,T,theta_2)
 %	Tavg: average torque for one cycle (N*m)
 %	I_flywheel: mass moment of inertia of the flywheel (kg*m^2)
 %	T: torque as a function of crank angle (N*m)
-%	Theta_0: crank angle where energy is being added to the flywheel (deg)
+%	Theta_2: crank angle of the flywheel (deg)
 %
 %  OUTPUT:
 %	w_2: angular velocity of the crank (rad/s)
@@ -659,22 +664,23 @@ function [COF_act,w_2] = getOmega(Tavg,I_flywheel,T,theta_2)
 %  DATE:12/05/2022
 %
 %  DESCRIPTION OF LOCAL VARIABLES
-%	COF: coefficient of fluctuation allowed for the flywheel
-%	w_0: minimum angular velocity of the flywheel (rad/s)
-%	theta_array: array from theta_0 to theta_0 on the next cycle used in
-%				 ode45 (deg)
+%	w_avg: average angular velocity of the flywheel (rad/s)
+%	w_2i: initial guess of w_2 using w_avg as the initial condition for
+%	ode45 (rad/s)
+%	w2i_avg: average value of the initial guess (rad/s)
 %	w2_min: minimum angular velocity of the flywheel (rad/s)
 %	w2_max: maximum angular velocity of the flywheel (rad/s)
-% 
+%	w2_avg: average value of the angular velocity (rad/s)
+%	offset: difference in the actual average to the specified average
+%	angular velocity (rad/s)
 %  FUNCTIONS CALLED 
-%	getdiffEQ: function handle defining the differential equation to be
+%	diffEQ: function handle defining the differential equation to be
 %	used in ode45
 %	ode45: differential equation solver
 %	min: minimum value of an array
 %	max: maximum value of an array
-%
+%	trapz: trapezoidal numerical integration
 %  START OF EXECUTABLE CODE
-COF = 0.002;
 w_avg = 2000*2*pi/60;
 
 % convert to radians
@@ -684,31 +690,41 @@ theta_2 = deg2rad(theta_2);
 fun = @(Theta_2,w_2) diffEQ(T,Tavg,I_flywheel,w_2,Theta_2);
 
 % run an initial guess with initial condition at w_avg
-[theta_2,w_2] = ode45(fun,theta_2,w_avg);
-w_2 = w_2.'; % transpose to make it a row vector
+[theta_2,w_2i] = ode45(fun,theta_2,w_avg);
+w_2i = w_2i.'; % transpose to make it a row vector
 
 % calculate the actual average of the initial guess
-w_2avg = trapz(theta_2,w_2)/(2*pi);
-offset = w_2avg-w_avg;
+w2i_avg = trapz(theta_2,w_2i)/(2*pi);
+offset = w2i_avg-w_avg;
 
 % make a new guess but offset the IC by the difference in averages
 [theta_2,w_2] = ode45(fun,theta_2,w_avg-offset);
 w_2 = w_2.'; % transpose to make it a row vector
 
+% calculate the new average
+w2_avg = trapz(theta_2,w_2)/(2*pi);
+
 w2_Min = min(w_2);       % in rad/s
 w2_Max = max(w_2);       % in rad/s
 
-COF_act = (w2_Max-w2_Min)/w_avg;
+% calculate the coefficient of fluctuation for our engine
+COF_act = (w2_Max-w2_Min)/w2_avg;
 end  % ends the getCheck function
 function [dwdtheta] = diffEQ(T,T_avg,I,w,Theta_2)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%  FUNCTION NAME: getdiffEQ
+%  FUNCTION NAME: diffEQ
 %
-%  PURPOSE: create the equation for ode45 to use
+%  PURPOSE: create the sum of torques equation for ode45 to use
 %
-%  INPUT: T,T_avg,I,w,Theta  
+%  INPUT: 
+%	T: torque of the engine (N*m)
+%	T_avg: average torque of the engine (N*m)
+%	I: mass moment of inertia of the flywheel (kg*m^2)
+%	w: rotational velocity of the flywheel (rad/s)
+%	Theta_2: crank angle of the engine (rad)  
 %
-%  OUTPUT: dydt, the differential eqution to be used by ode45
+%  OUTPUT: 
+%	dwdtheta: derivative of omega with respect to theta_2
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
@@ -723,13 +739,54 @@ function [dwdtheta] = diffEQ(T,T_avg,I,w,Theta_2)
 % find the index in the torque array corresponding to the input theta value
 index = round(Theta_2/(2*pi/3600));
 
+% make sure that the index doesn't exceed the bounds
 if index <= 3600
 	dwdtheta = (T(index)-T_avg)/(I*w);   % the diffeq to find w
 else
 	dwdtheta = (T(index-3600)-T_avg)/(I*w);   % the diffeq to find w
 end
 end
-function [] = printOutput(theta2,ydisplacer,ypower,torque,power,FlywheeldiaO,P,Mtot,volumeE,volumeC,volumeT,w_2,COF_act, Pbot, Ptop, P1, P2, P3, P4, pvPower, cycPower)
+function [ pvPower, cycPower ] = getpvPower( pressure, volumeT, Ptop, Pbottom, omega_avg )
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  FUNCTION NAME: pvPower
+%
+%  PURPOSE: Extracts the power output from the P-V plot and compares it to
+%  the idealized processes described by the stirling cycle
+%
+%  INPUT: pressure, volumeT, Ptop, Pbottom, omega_avg
+%
+%  OUTPUT: pvPower - power output from the p-v response in kW
+%          cycPower - power output from the stirling cycle in kW
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%  AUTHOR: Carter Zehr
+%  DATE: 12/7/2022
+%
+%  DESCRIPTION OF LOCAL VARIABLES
+%
+%  FUNCTIONS CALLED
+%
+%  START OF EXECUTABLE CODE
+%
+
+% First determine the time per cycle of the engine
+timePerCycle = (2*3.1415) / omega_avg;
+
+% Work/time = power for the engine
+workBounds = volumeT(1:3600);
+
+workPV = trapz(workBounds, pressure);
+pvPower = workPV / (1000 *timePerCycle);
+
+% Work/time = power for the cycle - redefine bounds for the volume
+newRange = linspace(min(volumeT), max(volumeT), 3600);
+
+idealPV = trapz(newRange, Ptop) - trapz(newRange, Pbottom);
+cycPower = idealPV / (1000 * timePerCycle);
+
+end
+function printOutput(theta2,ydisplacer,ypower,torque,power,FlywheeldiaO,P,Mtot,volumeE,volumeC,volumeT,w_2,COF_act, Pbot, Ptop, P1, P2, P3, P4, pvPower, cycPower)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  FUNCTION NAME: Print Output Function
 %  PURPOSE 
@@ -762,8 +819,8 @@ hold on
 plot(theta2, ypower);
 plot(theta2, ydisplacer);
 legend('power piston', 'displacer piston');
-xlabel('theta2 (deg)');
-ylabel('theta3 (deg)');
+xlabel('Crank Angle (deg)');
+ylabel('y Position (m)');
 xlim([0 360]);
 title('Piston Positions vs Crank Angle');
 hold off
@@ -829,3 +886,72 @@ fprintf('\nPower from the P-V plot: %f kW ',pvPower);
 fprintf('\nIdealized power from the stirling cycle: %f kW ',cycPower);
 fprintf('\nPV power as a percent of idealized power: %f percent\n',100*pvPower/cycPower);
 end
+function getParamVary(Pmin,volumeR,Tc,theta2,length,cylD,Cf,omega_avg,torque)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  FUNCTION NAME: getParamVary
+%  PURPOSE
+%  To change a critical parameter of the engine and determine the effects
+%  on the torque, power, and flywheel geometry.
+% 
+%  INPUT
+%  All info similar to main output function, as well varied parameter
+%  selection.
+%
+%  OUTPUT
+%  Average Engine Power (kW), Flywheel outer diameter (m) plots.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%  AUTHOR: Paxton Berger
+%  DATE: 12/6/2022
+%
+%  DESCRIPTION OF LOCAL VARIABLES
+%  plotResolution, a variable determining the number of plotted points to
+%  show trend of varied parameter agaisnt output values.
+%
+%  FUNCTIONS CALLED
+%  getTheta3,getYPosition,gotVolumeE,getVolumeC,getPressure,getIdeal,
+%  getFp,getTorque,getTavg,getThetas,getDeltaKE,getI,getFlywheelsize.getOmega.
+%
+%  START OF EXECUTABLE CODE
+
+%% Parameter Vary
+figure;
+hold on;
+plotResolution = 25; %Number of points on plots
+Thigh = linspace(400,2000,plotResolution); %Setup varied parameter array space.
+powerV = zeros(1,plotResolution); %Initialize output arrays
+Dvary = zeros(1,plotResolution); %Initialize output arrays
+for j = 1:plotResolution %For loop to iterate varied parameter and store in array
+    Te = Thigh(j);
+    [theta3displacer, theta3power] = getTheta3(length,theta2);
+    [ydisplacer, ypower ]  = getYPosition( theta2, theta3displacer, theta3power, length);
+    [volumeE] = getVolumeE(cylD,ydisplacer);
+    [volumeC] = getVolumeC(ydisplacer, ypower, cylD);
+    [P] = getPressure(Pmin,volumeC,volumeE,volumeR,Tc,Te,theta2);
+    Fp = getFp(P);
+    [torque] = getTorque(Fp,length,theta2, torque, theta3power);
+    Tavg = getTavg(theta2, torque);
+    [theta0, thetaF] = getThetas(torque, Tavg);
+    deltaKE = getDeltaKE(theta0, thetaF, Tavg, torque, theta2);
+    I = getI(deltaKE,Cf,omega_avg);
+    Dvary(j) = 1000*getFlywheelsize(I);
+    powerV(j) = Tavg*omega_avg/1000;
+end
+%Plot
+hold off
+plot(Thigh, powerV);
+title('Power Output as a Function of Te');
+xlabel('Expansion Temperature (K)');
+ylabel('Power Output (kW)');
+
+figure;
+plot(Thigh, Dvary);
+title('Flywheel Diameter as a Function of Te');
+xlabel('Expansion Temperature (K)');
+ylabel('Flywheel Diameter (mm)');
+end
+
+
+
+
+
