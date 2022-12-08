@@ -8,7 +8,7 @@
 %  velocity fluctuation.
 % 
 %  INPUT
-%  NA
+%  Locals
 %
 %  OUTPUT
 %  Average Engine Power (kW), Flywheel outer diameter (m), Engine
@@ -18,9 +18,26 @@
 %  DATE: 11/30/2022
 %
 %  DESCRIPTION OF LOCAL VARIABLES
+%  Cylinder Strucutre (cylP,cylD): A set of values that describe the power
+%  and displacer cylinder geometries
 %  
+%  Length Structure (OaA,OaC,AB,CD): A set of values that describe the
+%  linkage geometries needed for thetas, y-postions, and volumes.
+%
+%  Pressure Values (Pmin,Tc,Te,volumeR): A set of values that describe the
+%  internal ideal gas properties of the cylinders during motion
+%
+%  Angular Requirment values (Cf,omega_avg): A set of values that describe the
+%  angular velocity parameters required for a properly functioning
+%  flywheel.
+%  
+%  Crank Values: (crank.angleP, crank.angleD): Two arrays that represent
+%  the possible theta values
+%
 %  FUNCTIONS CALLED
-%  NA
+%  getTheta3, getYPosition, getVolumeE, getVolumeC, getPressure, getIdeal, getFp,
+%  getTorque, getTavg, getThetas, torqueDiff, getDeltaKE, getI, Idif,
+%  getOmega, diffEQ, getpvPower, printOutput, getParamVary.
 %
 %  START OF EXECUTABLE CODE
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -52,7 +69,7 @@ Tc = 300;
 Te = 900;
 volumeR = 0.00001; %[m]
 
-% Flywheel values
+% Angular Requirment values
 Cf = 0.002;
 omega_avg = 2000*2*pi/60;
 
@@ -950,8 +967,3 @@ title('Flywheel Diameter as a Function of Te');
 xlabel('Expansion Temperature (K)');
 ylabel('Flywheel Diameter (mm)');
 end
-
-
-
-
-
