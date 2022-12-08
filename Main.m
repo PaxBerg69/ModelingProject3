@@ -14,9 +14,7 @@
 %  Average Engine Power (kW), Flywheel outer diameter (m), Engine
 %  coefficient of fluctuation (-). Plot relevant parameters and trends
 %  associated with increased hot temps.
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-%  AUTHOR: Paxton Berger
+%  AUTHOR: Paxton Berger, Andrew Casar, Carter Zehr, Trey Weber
 %  DATE: 11/30/2022
 %
 %  DESCRIPTION OF LOCAL VARIABLES
@@ -25,7 +23,7 @@
 %  NA
 %
 %  START OF EXECUTABLE CODE
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 clc;
 close all;
 
