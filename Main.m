@@ -78,9 +78,12 @@ deltaKE = getDeltaKE(theta0, thetaF, Tavg, torque, theta2);
 I = getI(deltaKE,Cf,omega_avg);
 [flywheelDiaO] = getFlywheelsize(I);
 [COF_act,w_2] = getOmega(Tavg,I,torque,theta2);
+% first try was barely within range, try a new value by increasing I
+[COF_new,w_2new] = getOmega(Tavg,I+0.2,torque,theta2);
+[flywheelDiaO_new] = getFlywheelsize(I+0.2);
 power = Tavg*omega_avg/1000; % in kW
 [pvPower, cycPower ] = getpvPower( P, volumeT, Ptop, Pbot, omega_avg );
-printOutput(theta2,ydisplacer,ypower,torque,power,flywheelDiaO,P,Mtot,volumeE,volumeC,volumeT,w_2,COF_act,Pbot,Ptop, P1, P2, P3, P4, pvPower, cycPower);
+printOutput(theta2,ydisplacer,ypower,torque,power,flywheelDiaO_new,P,Mtot,volumeE,volumeC,volumeT,w_2new,COF_new,Pbot,Ptop, P1, P2, P3, P4, pvPower, cycPower);
 
 %% Parameter Vary
 figure;
