@@ -79,4 +79,4 @@ I = getI(deltaKE,Cf,omega_avg);
 power = Tavg*omega_avg/1000; % in kW
 [pvPower, cycPower ] = getpvPower( P, volumeT, Ptop, Pbot, omega_avg );
 printOutput(theta2,ydisplacer,ypower,torque,power,flywheelDiaO,P,Mtot,volumeE,volumeC,volumeT,w_2,COF_act,Pbot,Ptop, P1, P2, P3, P4, pvPower, cycPower);
-getParamVary(Pmin,volumeR,Tc,theta2,length,cylD,Cf,omega_avg);
+getParamVary(Pmin,volumeR,Tc,theta2,length,cylD,Cf,omega_avg,torque);

@@ -25,7 +25,7 @@
 %
 %  START OF EXECUTABLE CODE
 
-function getParamVary(Pmin,volumeR,Tc,theta2,length,cylD,Cf,omega_avg)
+function getParamVary(Pmin,volumeR,Tc,theta2,length,cylD,Cf,omega_avg,torque)
 %% Parameter Vary
 figure;
 hold on;
